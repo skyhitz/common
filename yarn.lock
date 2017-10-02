@@ -1579,9 +1579,9 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-function-extractor@skyhitz/function-extractor:
+function-extractor@skyhitz/function-extractor#89ad5bd63daa804f4fddfd45484a32cd2060ea6d:
   version "0.0.5"
-  resolved "https://codeload.github.com/skyhitz/function-extractor/tar.gz/85199c6bb9fd9a3ba4a5c3b4716d4840c471b94c"
+  resolved "https://codeload.github.com/skyhitz/function-extractor/tar.gz/89ad5bd63daa804f4fddfd45484a32cd2060ea6d"
   dependencies:
     esprima ""
 
