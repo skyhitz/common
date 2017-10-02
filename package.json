@@ -1,0 +1,31 @@
+{
+  "name": "skyhitz-common",
+  "version": "0.0.1",
+  "description": "Skyhitz Common Module for State management",
+  "author": "Alejo Mendoza",
+  "license": "MIT",
+  "main": "index.js",
+  "engineStrict": true,
+  "engines": {
+    "node": "6.11.1"
+  },
+  "dependencies": {
+    "@types/node": "^8.0.31",
+    "@types/node-fetch": "^1.6.7",
+    "@types/react-native": "^0.48.9",
+    "apollo-client": "^1.9.3",
+    "fn-extractor": "skyhitz/fn-extractor",
+    "function-extractor": "skyhitz/function-extractor",
+    "graphql-tag": "^2.4.2",
+    "immutable": "^3.8.1",
+    "lodash.merge": "4.6.0",
+    "mobx": "^3.3.0",
+    "node-fetch": "^1.7.3",
+    "react-native": "^0.48.4",
+    "ts-node": "3.1.0",
+    "typescript": "^2.2.2"
+  },
+  "devDependencies": {
+    "tslint": "^5.5.0"
+  }
+}
