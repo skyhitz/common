@@ -1,7 +1,7 @@
 
 import { Payload } from './payload.model';
 
-export class EntryPayload extends Payload {
+class EntryPayload extends Payload {
   userDisplayName?: string;
   avatarUrlSmall?: string;
   avatarUrlMedium?: string;
