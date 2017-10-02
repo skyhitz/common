@@ -21,11 +21,13 @@
     "lodash.merge": "4.6.0",
     "mobx": "^3.3.0",
     "node-fetch": "^1.7.3",
-    "react-native": "^0.48.4",
     "ts-node": "3.1.0",
     "typescript": "^2.2.2"
   },
   "devDependencies": {
     "tslint": "^5.5.0"
+  },
+  "peerDependencies": {
+    "react-native": "^0.48"
   }
 }
