@@ -1,7 +1,7 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 const globalAny: any = global;
 
-globalAny.fetch = require('node-fetch');
+globalAny.fetch = require('fetch-everywhere');
 
 export const client = new ApolloClient({
   networkInterface: createNetworkInterface({

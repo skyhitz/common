@@ -1,7 +1,7 @@
 const functionExtractor = require('function-extractor');
 const functionExtract = require('fn-extractor');
 import AsyncStorage from '../async-storage';
-import fetch from 'node-fetch';
+require('fetch-everywhere');
 
 /**
  * Extracts the stream url from youtube by downloading the
