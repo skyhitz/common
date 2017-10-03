@@ -1,40 +1,31 @@
-
 import { Entry } from '../models/entry.model';
-import { usersSearchBackend } from '../backends/users-search.backend';
-import { observable } from 'mobx';
+import { entriesSearchBackend } from '../backends/entries-search.backend';
+import { observable, observe } from 'mobx';
 import { List } from 'immutable';
 
-class EntriesSearchStore {
+export class EntriesSearchStore {
+  @observable public entries: List<Entry> = List([]);
   constructor (
+    public queryObservable: any
   ) {
   }
 
-  @observable public query: string = '';
-  @observable public entries: List<Entry> = List([]);
-
-  public getRecentEntriesSearches() {
-    if (this.entries.size) {
-      return;
+  public disposer = observe(this.queryObservable, ({ object }) => {
+    if (object.type === 'entries') {
+      this.searchEntries(object.q);
     }
-    this.searchEntries('');
-  }
+  });
 
   public searchEntries(q: string) {
-    usersSearchBackend.search(q)
-      .then(users => this.setUsers(List(users)));
+    entriesSearchBackend.search(q)
+      .then(entries => this.setEntries(List(entries)));
   }
 
-  public setUsers(entries: List<Entry>) {
+  public setEntries(entries: List<Entry>) {
     this.entries = entries;
-  }
-
-  public updateQuery(q: string) {
-    this.query = q;
-    return this.searchEntries(q);
   }
 
 }
 
-export const entriesSearchStore = new EntriesSearchStore();
 
 
