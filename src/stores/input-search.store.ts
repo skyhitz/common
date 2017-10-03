@@ -11,9 +11,12 @@ export class InputSearchStore {
   ) {
   }
 
-  public updateQuery(query: Query) {
-    this.query.type = query.type;
-    this.query.q = query.q;
+  public search(query: string) {
+    this.query.q = query;
+  }
+
+  public updateSearchType(type: 'entries' | 'users') {
+    this.query.type = type;
   }
 }
 
