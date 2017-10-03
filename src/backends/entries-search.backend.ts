@@ -4,6 +4,9 @@ import { Entry } from '../models/entry.model';
 
 export class EntriesSearchBackend {
   async search(q: string) {
+    if (!q) {
+      return [];
+    }
     return client.query({
       query: gql`
       {
