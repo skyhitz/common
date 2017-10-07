@@ -5,7 +5,7 @@ import MockLocalStorage from './index.mock';
 
 let LocalStorage: TAsyncStorage;
 
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
   LocalStorage = WebLocalStorage;
 } else {
   let isMobileStorageAvailable = MobileLocalStorage.isAvailable();
