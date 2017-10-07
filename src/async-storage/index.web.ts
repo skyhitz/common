@@ -1,4 +1,5 @@
 const merge = require('lodash.merge');
+let localStorage = window.localStorage;
 
 import { TAsyncStorage } from './types';
 
@@ -12,7 +13,7 @@ const API: TAsyncStorage = {
   },
   clear: () => {
     return new Promise((resolve) => {
-      window.localStorage.clear();
+      localStorage.clear();
       resolve();
     });
   },
@@ -81,7 +82,7 @@ const API: TAsyncStorage = {
   },
   multiRemove: (keys) => {
     return new Promise((resolve) => {
-      keys.forEach(key => window.localStorage.removeItem(key));
+      keys.forEach(key => localStorage.removeItem(key));
       resolve();
     });
   },
