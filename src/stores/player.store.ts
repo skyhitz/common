@@ -1,5 +1,5 @@
 
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 import { Entry } from '../models';
 import { List } from 'immutable';
 import { streamUrlsStore } from './stream-urls.store';
@@ -52,6 +52,13 @@ export class PlayerStore {
 
   updateTabBarBottomPosition(bottom: number) {
     this.tabBarBottomPosition = bottom;
+  }
+
+  @computed get hideTabPlayer() {
+    if (!this.entry) {
+      return true;
+    }
+    return false;
   }
 
 }
