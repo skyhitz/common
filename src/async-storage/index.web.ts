@@ -1,5 +1,9 @@
 const merge = require('lodash.merge');
-let localStorage = window.localStorage;
+let localStorage: any;
+
+if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+  localStorage = window.localStorage;
+}
 
 import { TAsyncStorage } from './types';
 
