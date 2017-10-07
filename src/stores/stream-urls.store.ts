@@ -174,8 +174,3 @@ class StreamUrlsStore {
 }
 
 export const streamUrlsStore = new StreamUrlsStore();
-
-streamUrlsStore.getVideoStreamUrl('kVpv8-5XWOI')
-  .then((url) => {
-    debugger;
-  });
