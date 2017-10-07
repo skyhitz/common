@@ -122,10 +122,10 @@ class StreamUrlsStore {
 
   extractCypherFunctions(code: string) {
     let functions: any = {};
-    let functionPattern = /([a-zA-Z]){2}:function(.*?)}{1}/gi;
+    let functionPattern = /([a-zA-Z0-9]){2}:function(.*?)}{1}/gi;
     let matches = code.match(functionPattern);
     matches.forEach(match => {
-      let namePattern = /([a-zA-Z]){2}:/;
+      let namePattern = /([a-zA-Z0-9]){2}:/;
       let nameMatch = namePattern.exec(match);
       let name = nameMatch[0].slice(0, -1);
       let argsPattern = /function\((.*?)\)/;
@@ -175,3 +175,7 @@ class StreamUrlsStore {
 
 export const streamUrlsStore = new StreamUrlsStore();
 
+streamUrlsStore.getVideoStreamUrl('kVpv8-5XWOI')
+  .then((url) => {
+    debugger;
+  });
