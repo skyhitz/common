@@ -8,7 +8,7 @@ require('fetch-everywhere');
  * web page and player.
  *
  */
-export class StreamUrlsStore {
+class StreamUrlsStore {
   public youtubeUrl = 'https://www.youtube.com';
   public signatureFunction: Function;
   public cypher: any;
@@ -54,8 +54,7 @@ export class StreamUrlsStore {
       })
       .then(body => {
         return this.extractVideoInfoFromWebPage(body);
-      })
-      .catch(e => console.log(e));
+      });
   }
 
   extractVideoInfoFromWebPage(videoWebPage: any): Promise<string> {
@@ -173,4 +172,6 @@ export class StreamUrlsStore {
   }
 
 }
+
+export const streamUrlsStore = new StreamUrlsStore();
 
