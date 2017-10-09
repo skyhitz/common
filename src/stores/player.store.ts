@@ -7,27 +7,24 @@ import { streamUrlsStore } from './stream-urls.store';
 export class PlayerStore {
   constructor() { }
   @observable entry: Entry;
-  @observable entryList: List<Entry>;
-  @observable currentIndex: number;
   @observable showPlayer: boolean = false;
   @observable currentStreamUrl: string = null;
   @observable loadingStream: boolean = false;
   @observable tabBarBottomPosition: number = 0;
+  @observable isPlaying: boolean = false;
+  @observable loop: boolean = false;
+  @observable shuffle: boolean = false;
 
-  getPrevIndex() {
-    var lastIndex = this.entryList.size - 1;
-    if (this.currentIndex === 0) {
-      return lastIndex;
-    }
-    return this.currentIndex - 1;
+  togglePlay() {
+    this.isPlaying = !this.isPlaying;
   }
 
-  getNextIndex() {
-    var lastIndex = this.entryList.size - 1;
-    if (lastIndex === this.currentIndex) {
-      return 0;
-    }
-    return this.currentIndex + 1;
+  toggleLoop() {
+    this.loop = !this.loop;
+  }
+
+  toggleShuffle() {
+    this.shuffle = !this.shuffle;
   }
 
   play(entry: Entry): any {
@@ -49,6 +46,14 @@ export class PlayerStore {
         console.error('cloud not load stream url', e);
       });
   }
+
+  playPrev() { }
+
+  playNext() { }
+
+  playRandom() { }
+
+  seekToSeconds() { }
 
   updateTabBarBottomPosition(bottom: number) {
     this.tabBarBottomPosition = bottom;
