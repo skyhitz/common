@@ -23,4 +23,12 @@ export class Entry extends EntryPayload {
   constructor(payload: EntryPayload) {
     super(payload);
   }
+
+  artistName() {
+    return this.title.split(' - ')[0] ? this.title.split(' - ')[0] : '';
+  }
+
+  titleOnly() {
+    return this.title.split(' - ')[1] ? this.title.split(' - ')[1] : '';
+  }
 }
