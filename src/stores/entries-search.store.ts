@@ -17,8 +17,11 @@ export class EntriesSearchStore {
   });
 
   public searchEntries(q: string) {
-    entriesSearchBackend.search(q)
-      .then(entries => this.setEntries(List(entries)));
+    return entriesSearchBackend.search(q)
+      .then(results => {
+        let entries: Entry[] = results.map((result: any) => new Entry(result));
+        this.setEntries(List(entries));
+      });
   }
 
   public setEntries(entries: List<Entry>) {
