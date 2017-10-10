@@ -15,6 +15,10 @@ export class PlayerStore {
   @observable loop: boolean = false;
   @observable shuffle: boolean = false;
 
+  togglePlayer() {
+    this.showPlayer = !this.showPlayer;
+  }
+
   togglePlay() {
     this.isPlaying = !this.isPlaying;
   }
