@@ -27,6 +27,10 @@ export class PlayerStore {
     this.shuffle = !this.shuffle;
   }
 
+  hidePlayer() {
+    this.showPlayer = false;
+  }
+
   play(entry: Entry): any {
     if (!entry) {
       return null;
