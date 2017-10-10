@@ -24,11 +24,11 @@ export class Entry extends EntryPayload {
     super(payload);
   }
 
-  artistName() {
+  get artistName() {
     return this.title.split(' - ')[0] ? this.title.split(' - ')[0] : '';
   }
 
-  titleOnly() {
+  get titleOnly() {
     return this.title.split(' - ')[1] ? this.title.split(' - ')[1] : '';
   }
 }
