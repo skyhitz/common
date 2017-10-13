@@ -70,8 +70,8 @@ export class PlayerStore {
       }
     } else {
       // Update current position, duration, and `shouldPlay`
-      this.positionMillis = playbackStatus.positionMillis;
-      this.durationMillis = playbackStatus.durationMillis;
+      this.playbackInstancePosition = playbackStatus.positionMillis;
+      this.playbackInstanceDuration = playbackStatus.durationMillis;
       this.shouldPlay = playbackStatus.shouldPlay;
 
       // Figure out what state should be next (only if we are not seeking, other the seek action handlers control the playback state,
