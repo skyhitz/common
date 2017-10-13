@@ -34,7 +34,7 @@ export class PlayerStore {
   }
 
   togglePlay() {
-    if (this.playbackState === 'PLAYING') {
+    if (this.isPlaying) {
       return this.shouldPlay = false;
     }
     return this.shouldPlay = true;
@@ -250,6 +250,10 @@ export class PlayerStore {
   // Capture the width of the seekbar slider for use in `_onSeekbarTap`
   onSliderLayout = (evt: any) => {
     this.sliderWidth = evt.nativeEvent.layout.width;
+  }
+
+  setNetworkState(state: any) {
+    this.networkState = state;
   }
 
 }
