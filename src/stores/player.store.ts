@@ -33,7 +33,8 @@ export class PlayerStore {
 
   togglePlay() {
     if (this.isPlaying) {
-      return this.shouldPlay = false;
+      this.shouldPlay = false;
+      return this.positionMillis = this.playbackInstancePosition;
     }
     return this.shouldPlay = true;
   }
