@@ -128,6 +128,7 @@ export class PlayerStore {
       return null;
     }
     this.entry = entry;
+    this.positionMillis = 0;
     this.shouldPlay = false;
     this.showPlayer = true;
     this.setPlaybackState('LOADING');
