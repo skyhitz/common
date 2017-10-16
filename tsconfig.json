@@ -12,9 +12,14 @@
       "node"
     ],
     "typeRoots": [
-      "./node_modules/@types/**/*.d.ts",
-      "./@types/**/*.d.ts"
+      "./node_modules/@types/**/*.d.ts"
     ],
+    "paths": {
+      "*": [ 
+        "./node_modules/@types/*", 
+        "*"
+      ]
+    },
     "baseUrl": "./"
   }
 }
