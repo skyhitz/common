@@ -127,11 +127,11 @@ export class PlayerStore {
     if (!entry) {
       return null;
     }
+    this.setPlaybackState('LOADING');
     this.entry = entry;
     this.positionMillis = 0;
     this.shouldPlay = false;
     this.showPlayer = true;
-    this.setPlaybackState('LOADING');
     return streamUrlsStore
       .getVideoStreamUrl(entry.id)
       .then(streamUrl => {
