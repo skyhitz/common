@@ -18,7 +18,8 @@ export class PlayerStore {
   @observable controlsState: ControlsState = 'SHOWN';
   @observable shouldPlay: boolean = false;
   @observable positionMillis: number = 0;
-  @observable durationMillis: number = 0;
+  @observable playbackInstancePosition: number = 0;
+  @observable playbackInstanceDuration: number = 0;
   @observable lastPlaybackStateUpdate: number = Date.now();
   @observable error: any;
   @observable networkState: any;
@@ -67,8 +68,8 @@ export class PlayerStore {
       }
     } else {
       // Update current position, duration, and `shouldPlay`
-      this.positionMillis = playbackStatus.positionMillis;
-      this.durationMillis = playbackStatus.durationMillis;
+      this.playbackInstancePosition = playbackStatus.positionMillis;
+      this.playbackInstanceDuration = playbackStatus.durationMillis;
       this.shouldPlay = playbackStatus.shouldPlay;
 
       // Figure out what state should be next (only if we are not seeking, other the seek action handlers control the playback state,
@@ -175,11 +176,11 @@ export class PlayerStore {
   }
 
   get durationDisplay() {
-    return this.getMMSSFromMillis(this.durationMillis);
+    return this.getMMSSFromMillis(this.playbackInstanceDuration);
   }
 
   get positionDisplay() {
-    return this.getMMSSFromMillis(this.positionMillis);
+    return this.getMMSSFromMillis(this.playbackInstancePosition);
   }
 
   setSeekState(seekState: SeekState) {
@@ -188,12 +189,12 @@ export class PlayerStore {
 
   get seekSliderPosition() {
     if (
-      this.positionMillis != null &&
-      this.durationMillis != null
+      this.playbackInstancePosition != null &&
+      this.playbackInstanceDuration != null
     ) {
       return (
-        this.positionMillis /
-        this.durationMillis
+        this.playbackInstancePosition /
+        this.playbackInstanceDuration
       );
     }
     return 0;
@@ -225,7 +226,7 @@ export class PlayerStore {
         ? 'BUFFERING'
         : 'PAUSED'
     );
-    this.positionMillis = value * this.durationMillis;
+    this.positionMillis = value * this.playbackInstanceDuration;
     this.shouldPlay = this.shouldPlayAtEndOfSeek;
     // The underlying <Video> has successfully updated playback position
     // TODO: If `shouldPlayAtEndOfSeek` is false, should we still set the playbackState to PAUSED?
