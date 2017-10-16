@@ -10,7 +10,6 @@ export class PlayerStore {
   @observable entry: Entry;
   @observable showPlayer: boolean = false;
   @observable currentStreamUrl: string = null;
-  @observable loadingStream: boolean = false;
   @observable tabBarBottomPosition: number = 0;
   @observable loop: boolean = false;
   @observable shuffle: boolean = false;
@@ -23,8 +22,6 @@ export class PlayerStore {
   @observable lastPlaybackStateUpdate: number = Date.now();
   @observable error: any;
   @observable networkState: any;
-  @observable playbackInstancePosition: any;
-  @observable playbackInstanceDuration: any;
   @observable shouldPlayAtEndOfSeek: boolean = false;
   @observable playbackStatus: any;
   @observable sliderWidth: number;
@@ -70,8 +67,8 @@ export class PlayerStore {
       }
     } else {
       // Update current position, duration, and `shouldPlay`
-      this.playbackInstancePosition = playbackStatus.positionMillis;
-      this.playbackInstanceDuration = playbackStatus.durationMillis;
+      this.positionMillis = playbackStatus.positionMillis;
+      this.durationMillis = playbackStatus.durationMillis;
       this.shouldPlay = playbackStatus.shouldPlay;
 
       // Figure out what state should be next (only if we are not seeking, other the seek action handlers control the playback state,
@@ -131,15 +128,15 @@ export class PlayerStore {
 
     this.entry = entry;
     this.showPlayer = true;
-    this.loadingStream = true;
+    this.playbackState = 'LOADING';
     return streamUrlsStore
       .getVideoStreamUrl(entry.id)
       .then(streamUrl => {
         this.currentStreamUrl = streamUrl;
-        this.loadingStream = false;
+        this.shouldPlay = true;
       })
       .catch(e => {
-        this.loadingStream = false;
+        this.playbackState = 'ERROR';
         console.error('cloud not load stream url', e);
       });
   }
@@ -184,12 +181,12 @@ export class PlayerStore {
 
   get seekSliderPosition() {
     if (
-      this.playbackInstancePosition != null &&
-      this.playbackInstanceDuration != null
+      this.positionMillis != null &&
+      this.durationMillis != null
     ) {
       return (
-        this.playbackInstancePosition /
-        this.playbackInstanceDuration
+        this.positionMillis /
+        this.durationMillis
       );
     }
     return 0;
@@ -221,7 +218,7 @@ export class PlayerStore {
         ? 'BUFFERING'
         : 'PAUSED'
     );
-    this.positionMillis = value * this.playbackInstanceDuration;
+    this.positionMillis = value * this.durationMillis;
     this.shouldPlay = this.shouldPlayAtEndOfSeek;
     // The underlying <Video> has successfully updated playback position
     // TODO: If `shouldPlayAtEndOfSeek` is false, should we still set the playbackState to PAUSED?
