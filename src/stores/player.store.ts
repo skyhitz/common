@@ -134,6 +134,7 @@ export class PlayerStore {
       .then(streamUrl => {
         this.currentStreamUrl = streamUrl;
         this.shouldPlay = true;
+        this.setPlaybackState('PLAYING');
       })
       .catch(e => {
         this.playbackState = 'ERROR';
@@ -146,8 +147,6 @@ export class PlayerStore {
   playNext() { }
 
   playRandom() { }
-
-  seekToSeconds() { }
 
   updateTabBarBottomPosition(bottom: number) {
     this.tabBarBottomPosition = bottom;
@@ -173,6 +172,14 @@ export class PlayerStore {
       return result;
     };
     return padWithZero(minutes) + ':' + padWithZero(seconds);
+  }
+
+  get durationDisplay() {
+    return this.getMMSSFromMillis(this.durationMillis);
+  }
+
+  get positionDisplay() {
+    return this.getMMSSFromMillis(this.positionMillis);
   }
 
   setSeekState(seekState: SeekState) {
