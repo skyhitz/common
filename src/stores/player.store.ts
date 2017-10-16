@@ -49,7 +49,7 @@ export class PlayerStore {
   replay() {
     this.shouldPlay = true;
     this.positionMillis = 0;
-    this.playbackState = 'PLAYING';
+    this.setPlaybackState('PLAYING');
   }
 
   setPlaybackState(playbackState: PlaybackState) {
