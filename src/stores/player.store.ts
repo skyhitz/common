@@ -127,10 +127,10 @@ export class PlayerStore {
     if (!entry) {
       return null;
     }
-
     this.entry = entry;
+    this.shouldPlay = false;
     this.showPlayer = true;
-    this.playbackState = 'LOADING';
+    this.setPlaybackState('LOADING');
     return streamUrlsStore
       .getVideoStreamUrl(entry.id)
       .then(streamUrl => {
@@ -139,7 +139,7 @@ export class PlayerStore {
         this.setPlaybackState('PLAYING');
       })
       .catch(e => {
-        this.playbackState = 'ERROR';
+        this.setPlaybackState('ERROR');
         console.error('cloud not load stream url', e);
       });
   }
