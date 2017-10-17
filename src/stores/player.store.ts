@@ -8,7 +8,7 @@ import { PlaybackState, SeekState, ControlsState } from '../types/index';
 export class PlayerStore {
   constructor() { }
   @observable entry: Entry;
-  @observable showPlayer: boolean = false;
+  @observable show: boolean = false;
   @observable currentStreamUrl: string = null;
   @observable tabBarBottomPosition: number = 0;
   @observable loop: boolean = false;
@@ -116,11 +116,11 @@ export class PlayerStore {
   }
 
   hidePlayer() {
-    this.showPlayer = false;
+    this.show = false;
   }
 
   showPlayer() {
-    this.showPlayer = true;
+    this.show = true;
   }
 
   play(entry: Entry): any {
