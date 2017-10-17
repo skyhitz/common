@@ -59,9 +59,9 @@ export class PlayerStore {
     this.playbackStatus = playbackStatus;
     if (!playbackStatus.isLoaded) {
       if (playbackStatus.error) {
-        this.setPlaybackState('ERROR');
         const errorMsg = `Encountered a fatal error during playback: ${playbackStatus.error}`;
         this.error = errorMsg;
+        this.setPlaybackState('ERROR');
       }
     } else {
       // Update current position, duration, and `shouldPlay`
