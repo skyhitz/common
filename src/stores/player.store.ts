@@ -27,10 +27,6 @@ export class PlayerStore {
   @observable playbackStatus: any;
   @observable sliderWidth: number;
 
-  togglePlayer() {
-    this.showPlayer = !this.showPlayer;
-  }
-
   togglePlay() {
     if (this.isPlaying) {
       this.shouldPlay = false;
@@ -121,6 +117,10 @@ export class PlayerStore {
 
   hidePlayer() {
     this.showPlayer = false;
+  }
+
+  showPlayer() {
+    this.showPlayer = true;
   }
 
   play(entry: Entry): any {
