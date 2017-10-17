@@ -159,7 +159,10 @@ class StreamUrlsStore {
     let streamInfo = encodedFmtStreamMap.split(',');
     let bestQuality = streamInfo[0];
     let streamU = this.parseData(bestQuality);
-    let streamingUrl = streamU.url + '&signature=' + this.signatureFunction(streamU.s);
+    let streamingUrl = streamU.url;
+    if (streamU.s) {
+      streamingUrl = streamingUrl + '&signature=' + this.signatureFunction(streamU.s);
+    }
     return streamingUrl;
   }
 
