@@ -20,12 +20,12 @@
     "immutable": "^3.8.1",
     "lodash.merge": "4.6.0",
     "mobx": "^3.3.0",
-    "ts-node": "3.1.0",
     "typescript": "^2.2.2"
   },
   "devDependencies": {
     "react-native": "^0.48",
-    "tslint": "^5.5.0"
+    "tslint": "^5.5.0",
+    "ts-node": "3.1.0"
   },
   "peerDependencies": {
     "react-native": "^0.48"

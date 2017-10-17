@@ -18,7 +18,8 @@
       "*": [ 
         "./node_modules/@types/*", 
         "*"
-      ]
+      ],
+      "skyhitz-common": ["node_modules/skyhitz-common"]      
     },
     "baseUrl": "./"
   }
