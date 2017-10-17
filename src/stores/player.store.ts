@@ -131,7 +131,7 @@ export class PlayerStore {
     this.entry = entry;
     this.positionMillis = 0;
     this.shouldPlay = false;
-    this.showPlayer = true;
+    this.showPlayer();
     return streamUrlsStore
       .getVideoStreamUrl(entry.id)
       .then(streamUrl => {
