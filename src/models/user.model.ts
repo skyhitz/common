@@ -6,13 +6,13 @@ class UserPayload extends Payload {
   bannerUrl?: string;
   displayName?: string;
   email?: string;
-  followersCount?: number;
   reputation?: number;
   publishedAt?: string;
   username?: string;
   id?: string;
   userType?: number;
   youtubeSubscriberCount?: number;
+  jwt?: string;
 }
 
 export class User extends UserPayload {
@@ -22,6 +22,14 @@ export class User extends UserPayload {
 
   get isYoutubeChannel(): boolean {
     return this.userType === 0;
+  }
+
+  get initials() {
+    let initialsArr = this.displayName.split(' ');
+    let firstInitial = initialsArr[0].substr(0, 1).toUpperCase();
+    let secondInitial = initialsArr[1] ? initialsArr[1].substr(0, 1).toUpperCase(): '';
+    let initials = firstInitial + secondInitial;
+    return initials;
   }
 
 }

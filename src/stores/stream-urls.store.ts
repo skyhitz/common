@@ -1,7 +1,13 @@
 const functionExtractor = require('function-extractor');
 const functionExtract = require('fn-extractor');
 import AsyncStorage from '../async-storage';
+import { observable } from "mobx";
 require('fetch-everywhere');
+
+type SignatureFunction = {
+  args: string,
+  function: string
+}
 
 /**
  * Extracts the stream url from youtube by downloading the
@@ -9,10 +15,78 @@ require('fetch-everywhere');
  *
  */
 class StreamUrlsStore {
-  public youtubeUrl = 'https://www.youtube.com';
+  public youtubeUrl = 'https://m.youtube.com';
   public signatureFunction: Function;
   public cypher: any;
+  
   constructor() {
+  }
+
+  async loadRemotePlayer(){
+    // Calling the getVideoStreamUrl once we pre load the javascript player and signature function. 
+    return this.getVideoStreamUrl('20Ov0cDPZy8');
+  }
+
+  async clearSignatureFunction() {
+    try {
+      await AsyncStorage.removeItem('signatureFunction');
+    } catch (error) {
+    }
+  }
+
+  async storeSignatureFunction(signatureFunction: SignatureFunction) {
+    try {
+      await AsyncStorage.setItem('signatureFunction', JSON.stringify(signatureFunction));
+    } catch (error) {
+    }
+  }
+
+  async storeCypher(cypher: any) {
+    try {
+      await AsyncStorage.setItem('cypher', JSON.stringify(cypher));
+    } catch (error) {
+    }
+  }
+
+  async clearCypher() {
+    try {
+      await AsyncStorage.removeItem('cypher');
+    } catch (error) {
+    }
+  }
+
+  async getCypher(): Promise<any> {
+    try {
+      let value = await AsyncStorage.getItem('cypher');
+      if (value == null) {
+        return null;
+      }
+      let cypher: any = {};
+      let functionArgs = JSON.parse(value);
+      functionArgs.forEach((val: any, index: any) => {
+        cypher[val.name] = new Function(...val.args, val.functionstring)
+      })
+
+      if (cypher == {}) {
+        return null;
+      }
+      return cypher;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSignatureFunction(): Promise<Function | null> {
+    try {
+      let value = await AsyncStorage.getItem('signatureFunction');
+      if (value == null) {
+        return null;
+      }
+      let fn: SignatureFunction = JSON.parse(value);
+      return new Function(fn.args, fn.function);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async storeYoutubePlayerUrl(youtubePlayerUrl: string) {
@@ -47,7 +121,7 @@ class StreamUrlsStore {
     }
   }
 
-  public getVideoStreamUrl(videoId: string) {
+  async getVideoStreamUrl(videoId: string) {
     return fetch(`${this.youtubeUrl}/watch?v=${videoId}&gl=US&hl=en&has_verified=1&bpctr=9999999999`)
       .then(res => {
         return res.text();
@@ -57,11 +131,23 @@ class StreamUrlsStore {
       });
   }
 
-  extractVideoInfoFromWebPage(videoWebPage: any): Promise<string> {
+  async extractVideoInfoFromWebPage(videoWebPage: any): Promise<string> {
     var res = videoWebPage.match(/;ytplayer\.config\s*=\s*({.+?});ytplayer/g);
     var jsonStringFromWeb = res[0].substring(19);
     jsonStringFromWeb = jsonStringFromWeb.substring(0, jsonStringFromWeb.length - 9);
     let json = JSON.parse(jsonStringFromWeb);
+    
+    let signatureFunction = await this.getSignatureFunction();
+    let cypher = await this.getCypher();
+    if (signatureFunction && cypher) {
+      this.signatureFunction = signatureFunction;
+      this.cypher = cypher;
+      let streamingUrl = this.getStreamingUrl(json.args);
+      if (streamingUrl) {
+        return streamingUrl;
+      }
+    }
+
     let playerUrl = json.assets.js;
     return this.loadPlayer(playerUrl)
       .then(javascriptPlayer => {
@@ -118,10 +204,12 @@ class StreamUrlsStore {
     this.cypher = this.extractCypherFunctions(cypherFunction);
     signatureFunctionString = signatureFunctionString.replace(new RegExp(cypherFunctionName, 'g'), 'this.cypher');
     this.signatureFunction = new Function(signFunc.params[0].name, signatureFunctionString);
+    this.storeSignatureFunction({ args: signFunc.params[0].name, function: signatureFunctionString });
   }
 
   extractCypherFunctions(code: string) {
     let functions: any = {};
+    let functionsArgs: any = [];
     let functionPattern = /([a-zA-Z0-9]){2}:function(.*?)}{1}/gi;
     let matches = code.match(functionPattern);
     matches.forEach(match => {
@@ -136,7 +224,9 @@ class StreamUrlsStore {
       let functionMatch = functionPattern.exec(match)[0];
       let functionString = functionMatch.substring(1, functionMatch.length - 1);
       functions[name] = new Function(...argsArr, functionString);
+      functionsArgs.push({ name: name, args: argsArr, functionstring: functionString });
     });
+    this.storeCypher(functionsArgs);
     return functions;
   }
 
@@ -154,16 +244,25 @@ class StreamUrlsStore {
     return code.substring(preStringIndex, endStringIndex);
   }
 
-  getStreamingUrl(videoInfo: any) {
+  getStreamingUrl(videoInfo: any): string {
     let encodedFmtStreamMap = videoInfo['url_encoded_fmt_stream_map'];
     let streamInfo = encodedFmtStreamMap.split(',');
-    let bestQuality = streamInfo[0];
+    let bestQuality = this.getFirstNonWebMFormat(streamInfo);
     let streamU = this.parseData(bestQuality);
     let streamingUrl = streamU.url;
     if (streamU.s) {
       streamingUrl = streamingUrl + '&signature=' + this.signatureFunction(streamU.s);
     }
     return streamingUrl;
+  }
+
+  getFirstNonWebMFormat(streamInfo: any[]) {
+    let firstNonWebM = streamInfo.find((info) => {
+      if (info.indexOf('webm') === -1){
+        return info;
+      }
+    });
+    return firstNonWebM;
   }
 
   parseData(data: any) {
@@ -177,3 +276,6 @@ class StreamUrlsStore {
 }
 
 export const streamUrlsStore = new StreamUrlsStore();
+
+  
+

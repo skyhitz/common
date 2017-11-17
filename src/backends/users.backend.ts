@@ -2,7 +2,7 @@ import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { User } from '../models/user.model';
 
-export class UsersSearchBackend {
+export class UsersBackend {
   async search(q: string) {
     if (!q) {
       return [];
@@ -12,10 +12,9 @@ export class UsersSearchBackend {
       {
         users(search: "${q}"){
           avatarUrl
-          bannnerUrl
+          bannerUrl
           displayName
           username
-          followersCount
           reputation
           id
         }
@@ -28,4 +27,4 @@ export class UsersSearchBackend {
   }
 }
 
-export const usersSearchBackend = new UsersSearchBackend();
+export const usersBackend = new UsersBackend();
