@@ -6,9 +6,9 @@ globalAny.fetch = require('fetch-everywhere');
 let graphqlUrl;
 
 if (__DEV__) {
-  graphqlUrl = 'http://localhost:3000/graphql';
+  graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/staging-api/graphql';
 } else {
-  graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/api/graphql';
+  graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/master-api/graphql';
 }
 
 let networkInterface = createNetworkInterface({
@@ -22,7 +22,7 @@ export let forceSignOut = observable(false);
  * on the authorization headers for each request.
  */
 networkInterface.use([{
-  async applyMiddleware(req, next) {
+  async applyMiddleware(req: any, next) {
     if (!req.options.headers) {
       req.options.headers = {};
     }
@@ -45,17 +45,17 @@ networkInterface.useAfter([{
   applyAfterware({ response }, next) {
     if (!response.ok) {
       response.clone().text().then((bodyText) => {
-        console.log(`Network Error: ${response.status} (${response.statusText}) - ${bodyText}`);
+        console.info(`Network Error: ${response.status} (${response.statusText}) - ${bodyText}`);
         next();
       });
     } else {
       let isUnauthorized = false;
       response.clone().json().then(({ errors }) => {
         if (errors) {
-          console.log('GraphQL Errors:', errors);
+          console.info('GraphQL Errors:', errors);
           errors.some((error: any) => {
             if (error.message == 'Unauthorized User'){
-              isUnauthorized = true;
+              return isUnauthorized = true;
             }
           })
         }

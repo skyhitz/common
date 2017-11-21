@@ -180,7 +180,7 @@ class StreamUrlsStore {
         this.storePlayerInfo(playerUrl, javascriptPlayer);
         return javascriptPlayer;
       })
-      .catch(e => console.log(e));
+      .catch(e => console.info(e));
   }
 
   storePlayerInfo(playerUrl: string, player: string) {

@@ -13,9 +13,13 @@ export class UserBackend {
           avatarUrl
           bannerUrl
           displayName
-          username
           reputation
+          username
           id
+          youtubeSubscriberCount
+          jwt
+          publishedAt
+          userType
         }
       }
       `
@@ -25,7 +29,6 @@ export class UserBackend {
         let usersArray = users.map((user: any) => new User(user));
         return usersArray[0];
       })
-      .catch(e => console.error(e));
   }
 
   async signUp({ displayName, email, username, password }: SignUpForm) {
@@ -79,6 +82,7 @@ export class UserBackend {
       .then((data: any) => data.data)
       .then(({ signIn }) => signIn)
       .catch(({ graphQLErrors }) => {
+        debugger;
         let [{ message }] = graphQLErrors;
         throw message;
       });

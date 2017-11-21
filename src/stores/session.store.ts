@@ -27,7 +27,7 @@ export class SessionStore {
   async setUser(value: any) {
     value = JSON.stringify(value)
     if (value) return LocalStorage.setItem('userData', value)
-    else console.log('not set, stringify failed:', 'userData', value)
+    else console.info('not set, stringify failed:', 'userData', value)
   }
 
   public forceSignOutDisposer = observe(forceSignOut, ({ object }) => {
@@ -41,7 +41,12 @@ export class SessionStore {
     return await LocalStorage.removeItem('userData');
   }
 
-  async loadSessionFromStorage() {
+  async loadSession() {
+    await this.loadFromStorage();
+    return await this.refreshUser();
+  }
+
+  async loadFromStorage() {
     try {
       let userPayload = await LocalStorage.getItem('userData');
       if (userPayload) {
@@ -49,11 +54,28 @@ export class SessionStore {
         return this.user;
       }
     } catch(e) {
-      console.log(e);
+      console.info(e);
     }
     
-    this.user = null;
-    return this.user;
+    return await this.signOut();
+  }
+
+  async refreshUser() {
+    if (!this.user) {
+      return await this.signOut();
+    }
+    try {
+      let userPayload = await userBackend.getById(this.user.id);
+      if (userPayload) {
+        userPayload.jwt = this.user.jwt;
+        await this.setUser(userPayload);
+        this.user = new User(userPayload);
+        return this.user;
+      }
+    } catch(e) {
+      console.info(e);
+    }
+    return await this.signOut();
   }
 
   async sendResetEmail(email: string) {

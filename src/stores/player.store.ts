@@ -430,7 +430,7 @@ export class PlayerStore {
           );
         })
         .catch((message: any) => {
-          console.log("Seek error: ", message);
+          console.info("Seek error: ", message);
         });
     }
   };
