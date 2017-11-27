@@ -20,6 +20,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -28,7 +31,7 @@ export class UserBackend {
       .then(({ users }: any) => {
         let usersArray = users.map((user: any) => new User(user));
         return usersArray[0];
-      })
+      });
   }
 
   async signUp({ displayName, email, username, password }: SignUpForm) {
@@ -47,6 +50,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -75,6 +81,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -121,6 +130,9 @@ export class UserBackend {
         jwt
         publishedAt
         userType
+        email
+        description
+        phone
       }
     }
     `

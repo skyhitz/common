@@ -25,9 +25,9 @@ export class SessionStore {
   }
 
   async setUser(value: any) {
-    value = JSON.stringify(value)
-    if (value) return LocalStorage.setItem('userData', value)
-    else console.info('not set, stringify failed:', 'userData', value)
+    value = JSON.stringify(value);
+    if (value) return LocalStorage.setItem('userData', value);
+    else console.info('not set, stringify failed:', 'userData', value);
   }
 
   public forceSignOutDisposer = observe(forceSignOut, ({ object }) => {
@@ -53,10 +53,10 @@ export class SessionStore {
         this.user = new User(JSON.parse(userPayload));
         return this.user;
       }
-    } catch(e) {
+    } catch (e) {
       console.info(e);
     }
-    
+
     return await this.signOut();
   }
 
@@ -72,7 +72,7 @@ export class SessionStore {
         this.user = new User(userPayload);
         return this.user;
       }
-    } catch(e) {
+    } catch (e) {
       console.info(e);
     }
     return await this.signOut();

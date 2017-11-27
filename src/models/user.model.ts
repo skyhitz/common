@@ -13,6 +13,8 @@ class UserPayload extends Payload {
   userType?: number;
   youtubeSubscriberCount?: number;
   jwt?: string;
+  phone?: string;
+  description?: string;
 }
 
 export class User extends UserPayload {
