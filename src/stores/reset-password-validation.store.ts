@@ -27,7 +27,7 @@ export class ResetPasswordValidationStore {
     return this.emailValid = true;
   }
 
-  @computed 
+  @computed
   get error() {
     if (this.emailError) {
       return this.emailError;

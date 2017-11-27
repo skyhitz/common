@@ -8,6 +8,7 @@ import { InputSearchStore } from './input-search.store';
 import { EntriesSearchStore } from './entries-search.store';
 import { UsersSearchStore } from './users-search.store';
 import { ProfileStore } from './profile.store';
+import { EditProfileStore } from './edit-profile.store';
 
 export const sessionStore = new SessionStore();
 export const signUpValidationStore = new SignUpValidationStore();
@@ -19,4 +20,4 @@ export const inputSearchStore = new InputSearchStore();
 export const entriesSearchStore = new EntriesSearchStore(inputSearchStore.query);
 export const usersSearchStore = new UsersSearchStore(inputSearchStore.query);
 export const profileStore = new ProfileStore();
-
+export const editProfileStore = new EditProfileStore(sessionStore);

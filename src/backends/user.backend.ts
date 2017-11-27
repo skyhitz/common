@@ -144,6 +144,24 @@ export class UserBackend {
         throw message;
       });
   }
+
+  async updateProfile(user: User) {
+    return client
+    .mutate({
+      mutation: gql`
+  mutation {
+    updateProfile(avatarUrl: "${user.avatarUrl}", displayName: "${user.displayName}", description: "${user.description}", username: "${user.username}", email: "${user.email}", phone: "${user.phone}")
+  }
+  `
+    })
+    .then((data: any) => data.data)
+    .then(({ updateProfile }) => updateProfile)
+    .catch(({ graphQLErrors }) => {
+      let [{ message }] = graphQLErrors;
+      throw message;
+    });
+  }
+
 }
 
 export const userBackend = new UserBackend();

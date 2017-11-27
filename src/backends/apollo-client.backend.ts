@@ -4,8 +4,13 @@ import LocalStorage from '../async-storage';
 const globalAny: any = global;
 globalAny.fetch = require('fetch-everywhere');
 let graphqlUrl;
-
-if (__DEV__) {
+let dev;
+if (typeof __DEV__ === undefined && !__DEV__) {
+  dev = false;
+} else {
+  dev = true;
+}
+if (dev) {
   graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/staging-api/graphql';
 } else {
   graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/master-api/graphql';
@@ -18,7 +23,7 @@ let networkInterface = createNetworkInterface({
 export let forceSignOut = observable(false);
 
 /**
- * Gets the JWT token from local storage and passes it 
+ * Gets the JWT token from local storage and passes it
  * on the authorization headers for each request.
  */
 networkInterface.use([{
@@ -33,7 +38,7 @@ networkInterface.use([{
         req.options.headers.authorization = `Bearer ${jwt}`;
       }
     }
-    
+
     next();
   },
 }]);
@@ -54,10 +59,10 @@ networkInterface.useAfter([{
         if (errors) {
           console.info('GraphQL Errors:', errors);
           errors.some((error: any) => {
-            if (error.message == 'Unauthorized User'){
+            if (error.message === 'Unauthorized User') {
               return isUnauthorized = true;
             }
-          })
+          });
         }
       }).then(() => {
         if (isUnauthorized) {
