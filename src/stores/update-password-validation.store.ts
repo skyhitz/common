@@ -52,7 +52,7 @@ export class UpdatePasswordValidationStore {
   }
 
 
-  @computed 
+  @computed
   get error() {
     if (this.passwordError) {
       return this.passwordError;

@@ -20,6 +20,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -28,7 +31,7 @@ export class UserBackend {
       .then(({ users }: any) => {
         let usersArray = users.map((user: any) => new User(user));
         return usersArray[0];
-      })
+      });
   }
 
   async signUp({ displayName, email, username, password }: SignUpForm) {
@@ -47,6 +50,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -75,6 +81,9 @@ export class UserBackend {
           jwt
           publishedAt
           userType
+          email
+          description
+          phone
         }
       }
       `
@@ -121,6 +130,9 @@ export class UserBackend {
         jwt
         publishedAt
         userType
+        email
+        description
+        phone
       }
     }
     `
@@ -132,6 +144,24 @@ export class UserBackend {
         throw message;
       });
   }
+
+  async updateProfile(avatarUrl: string, displayName: string, description: string, username: string, email: string, phone: string) {
+    return client
+    .mutate({
+      mutation: gql`
+  mutation {
+    updateProfile(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}")
+  }
+  `
+    })
+    .then((data: any) => data.data)
+    .then(({ updateProfile }) => updateProfile)
+    .catch(({ graphQLErrors }) => {
+      let [{ message }] = graphQLErrors;
+      throw message;
+    });
+  }
+
 }
 
 export const userBackend = new UserBackend();

@@ -23,13 +23,13 @@ export class UsersSearchStore {
 
   public searchUsers(q: string) {
     usersBackend.search(q)
-      .then(users => { 
+      .then(users => {
         this.setUsers(List(users));
         this.searching = false;
       });
   }
 
-  public debouncedSearch = debounce(this.searchUsers, 400)
+  public debouncedSearch = debounce(this.searchUsers, 400);
 
   public setUsers(users: List<User>) {
     this.users = users;
