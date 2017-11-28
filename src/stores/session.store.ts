@@ -7,7 +7,7 @@ import { SignUpForm, SignInForm } from '../types';
 import LocalStorage from '../async-storage';
 
 export class SessionStore {
-  @observable user: User = null;
+  public user: User = observable(null);
   constructor (
   ) {
   }
