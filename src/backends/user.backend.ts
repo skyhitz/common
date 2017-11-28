@@ -147,7 +147,21 @@ export class UserBackend {
     .mutate({
       mutation: gql`
   mutation {
-    updateUser(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}")
+    updateUser(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}"){
+      avatarUrl
+      bannerUrl
+      displayName
+      reputation
+      username
+      id
+      youtubeSubscriberCount
+      jwt
+      publishedAt
+      userType
+      email
+      description
+      phone
+    }
   }
   `
     })
