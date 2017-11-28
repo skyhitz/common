@@ -1,12 +1,17 @@
 import { User } from '../models/user.model';
 import { entriesBackend } from '../backends/entries.backend';
-import { observable, observe, computed } from 'mobx';
+import { observable, observe, action } from 'mobx';
 import { userBackend } from '../backends/user.backend';
 import { SessionStore } from './session.store';
 
 export class EditProfileStore {
-  @observable profile: User;
   @observable error: string;
+  @observable avatarUrl: string;
+  @observable displayName: string;
+  @observable description: string;
+  @observable username: string;
+  @observable email: string;
+  @observable phone: string;
 
   constructor (
     public sessionStore: SessionStore
@@ -14,38 +19,49 @@ export class EditProfileStore {
   }
 
   public disposer = observe(this.sessionStore.session, ({object}) => {
-    this.profile = object.user;
+    let { avatarUrl, displayName, description, username, email, phone } = object.user;
+    this.avatarUrl = avatarUrl;
+    this.displayName = displayName;
+    this.description = description;
+    this.username = username;
+    this.email = email;
+    this.phone = phone;
   });
 
-
-  updateDisplayName(displayName: string) {
-    this.profile.displayName = displayName;
+  @action
+  updateAvatarUrl = (text: string) => {
+    this.avatarUrl = text;
   }
 
-  updateDescription(description: string) {
-    this.profile.description = description;
+  @action
+  updateDisplayName = (text: string) => {
+    this.displayName = text;
   }
 
-  updateUsername(username: string) {
-    this.profile.username = username;
+  @action
+  updateDescription = (text: string) => {
+    this.description = text;
   }
 
-  updateEmail(email: string) {
-    this.profile.email = email;
+  @action
+  updateUsername = (text: string) => {
+    this.username = text;
   }
 
-  updatePhone(phone: string) {
-    this.profile.phone = phone;
+  @action
+  updateEmail = (text: string) => {
+    this.email = text;
   }
 
-  updateAvatarUrl(avatarUrl: string) {
-    this.profile.avatarUrl = avatarUrl;
+  @action
+  updatePhone = (text: string) => {
+    this.phone = text;
   }
 
   async updateProfile() {
     let user;
     try {
-      user = await userBackend.updateProfile(this.profile);
+      user = await userBackend.updateProfile(this.avatarUrl, this.displayName, this.description, this.username, this.email, this.phone);
     } catch (e) {
       this.error = e;
       return;

@@ -145,12 +145,12 @@ export class UserBackend {
       });
   }
 
-  async updateProfile(user: User) {
+  async updateProfile(avatarUrl: string, displayName: string, description: string, username: string, email: string, phone: string) {
     return client
     .mutate({
       mutation: gql`
   mutation {
-    updateProfile(avatarUrl: "${user.avatarUrl}", displayName: "${user.displayName}", description: "${user.description}", username: "${user.username}", email: "${user.email}", phone: "${user.phone}")
+    updateProfile(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}")
   }
   `
     })
