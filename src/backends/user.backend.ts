@@ -28,10 +28,7 @@ export class UserBackend {
       `
       })
       .then((data: any) => data.data)
-      .then(({ users }: any) => {
-        let usersArray = users.map((user: any) => new User(user));
-        return usersArray[0];
-      });
+      .then(({ authenticatedUser }) => authenticatedUser);
   }
 
   async signUp({ displayName, email, username, password }: SignUpForm) {
