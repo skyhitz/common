@@ -5,10 +5,10 @@ const globalAny: any = global;
 globalAny.fetch = require('fetch-everywhere');
 let graphqlUrl;
 let dev;
-if (typeof __DEV__ === undefined && !__DEV__) {
-  dev = false;
-} else {
+if (typeof __DEV__ !== undefined && __DEV__) {
   dev = true;
+} else {
+  dev = false;
 }
 if (dev) {
   graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/staging-api/graphql';
