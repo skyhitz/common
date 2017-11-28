@@ -61,7 +61,7 @@ export class EditProfileStore {
   async updateProfile() {
     let user;
     try {
-      user = await userBackend.updateProfile(this.avatarUrl, this.displayName, this.description, this.username, this.email, this.phone);
+      user = await userBackend.updateUser(this.avatarUrl, this.displayName, this.description, this.username, this.email, this.phone);
     } catch (e) {
       this.error = e;
       return;
