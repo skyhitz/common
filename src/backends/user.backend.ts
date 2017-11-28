@@ -142,17 +142,17 @@ export class UserBackend {
       });
   }
 
-  async updateProfile(avatarUrl: string, displayName: string, description: string, username: string, email: string, phone: string) {
+  async updateUser(avatarUrl: string, displayName: string, description: string, username: string, email: string, phone: string) {
     return client
     .mutate({
       mutation: gql`
   mutation {
-    updateProfile(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}")
+    updateUser(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}")
   }
   `
     })
     .then((data: any) => data.data)
-    .then(({ updateProfile }) => updateProfile)
+    .then(({ updateUser }) => updateUser)
     .catch(({ graphQLErrors }) => {
       let [{ message }] = graphQLErrors;
       throw message;
