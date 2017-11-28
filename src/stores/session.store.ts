@@ -70,9 +70,10 @@ export class SessionStore {
     try {
       let userPayload = await userBackend.getAuthenticatedUser();
       if (userPayload) {
-        userPayload.jwt = this.session.user.jwt;
-        await this.setUser(userPayload);
-        this.session.user = new User(userPayload);
+        let userPayloadClone = Object.assign({}, userPayload);
+        userPayloadClone.jwt = this.session.user.jwt;
+        await this.setUser(userPayloadClone);
+        this.session.user = new User(userPayloadClone);
         return this.session.user;
       }
     } catch (e) {
