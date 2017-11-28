@@ -68,7 +68,7 @@ export class SessionStore {
       return await this.signOut();
     }
     try {
-      let userPayload = await userBackend.getById(this.session.user.id);
+      let userPayload = await userBackend.getAuthenticatedUser();
       if (userPayload) {
         userPayload.jwt = this.session.user.jwt;
         await this.setUser(userPayload);

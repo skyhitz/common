@@ -4,12 +4,12 @@ import { User } from "../models/user.model";
 import { SignUpForm, SignInForm } from "../types";
 
 export class UserBackend {
-  async getById(id: string) {
+  async getAuthenticatedUser() {
     return client
       .query({
         query: gql`
       {
-        users(id: "${id}"){
+        authenticatedUser {
           avatarUrl
           bannerUrl
           displayName
