@@ -30,7 +30,7 @@ export class EntriesSearchStore {
       });
   }
 
-  public debouncedSearch = debounce(this.searchEntries, 400)
+  public debouncedSearch = debounce(this.searchEntries, 400);
 
   public setEntries(entries: List<Entry>) {
     this.entries = entries;
