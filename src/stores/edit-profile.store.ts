@@ -13,8 +13,8 @@ export class EditProfileStore {
   ) {
   }
 
-  public disposer = observe(this.sessionStore.user, ({object}) => {
-    this.profile = object;
+  public disposer = observe(this.sessionStore.session, ({object}) => {
+    this.profile = object.user;
   });
 
 

@@ -1,4 +1,4 @@
-import { observable, observe } from 'mobx';
+import { observable, observe, computed } from 'mobx';
 import { User } from '../models';
 import { List } from 'immutable';
 import { userBackend } from '../backends/user.backend';
@@ -7,7 +7,10 @@ import { SignUpForm, SignInForm } from '../types';
 import LocalStorage from '../async-storage';
 
 export class SessionStore {
-  public user: User = observable(null);
+  public session: {user: User} = observable({ user: null });
+  @computed get user() {
+    return this.session.user;
+  }
   constructor (
   ) {
   }
@@ -15,13 +18,13 @@ export class SessionStore {
   async signUp(signUp: SignUpForm) {
     let userPayload = await userBackend.signUp(signUp);
     await this.setUser(userPayload);
-    return this.user = new User(userPayload);
+    return this.session.user = new User(userPayload);
   }
 
   async signIn(signIn: SignInForm) {
     let userPayload = await userBackend.signIn(signIn);
     await this.setUser(userPayload);
-    return this.user = new User(userPayload);
+    return this.session.user = new User(userPayload);
   }
 
   async setUser(value: any) {
@@ -37,7 +40,7 @@ export class SessionStore {
   });
 
   async signOut() {
-    this.user = null;
+    this.session.user = null;
     return await LocalStorage.removeItem('userData');
   }
 
@@ -50,8 +53,8 @@ export class SessionStore {
     try {
       let userPayload = await LocalStorage.getItem('userData');
       if (userPayload) {
-        this.user = new User(JSON.parse(userPayload));
-        return this.user;
+        this.session.user = new User(JSON.parse(userPayload));
+        return this.session.user;
       }
     } catch (e) {
       console.info(e);
@@ -61,16 +64,16 @@ export class SessionStore {
   }
 
   async refreshUser() {
-    if (!this.user) {
+    if (!this.session.user) {
       return await this.signOut();
     }
     try {
-      let userPayload = await userBackend.getById(this.user.id);
+      let userPayload = await userBackend.getById(this.session.user.id);
       if (userPayload) {
-        userPayload.jwt = this.user.jwt;
+        userPayload.jwt = this.session.user.jwt;
         await this.setUser(userPayload);
-        this.user = new User(userPayload);
-        return this.user;
+        this.session.user = new User(userPayload);
+        return this.session.user;
       }
     } catch (e) {
       console.info(e);
@@ -85,7 +88,7 @@ export class SessionStore {
   async updatePassword(token: string, password: string) {
     let userPayload = await userBackend.updatePassword(token, password);
     await this.setUser(userPayload);
-    return this.user = new User(userPayload);
+    return this.session.user = new User(userPayload);
   }
 
 }
