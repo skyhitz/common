@@ -11,8 +11,12 @@ export class EditProfileStore {
   constructor (
     public sessionStore: SessionStore
   ) {
-    this.profile = this.sessionStore.user;
   }
+
+  public disposer = observe(this.sessionStore.user, ({object}) => {
+    this.profile = object;
+  });
+
 
   updateDisplayName(displayName: string) {
     this.profile.displayName = displayName;
