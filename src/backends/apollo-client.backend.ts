@@ -27,7 +27,7 @@ export let forceSignOut = observable(false);
  * on the authorization headers for each request.
  */
 networkInterface.use([{
-  async applyMiddleware(req: any, next) {
+  async applyMiddleware(req: any, next: any) {
     if (!req.options.headers) {
       req.options.headers = {};
     }
@@ -47,15 +47,15 @@ networkInterface.use([{
  * Loggs out the user when making unauthorized requests.
  */
 networkInterface.useAfter([{
-  applyAfterware({ response }, next) {
+  applyAfterware({ response }: any, next: any) {
     if (!response.ok) {
-      response.clone().text().then((bodyText) => {
+      response.clone().text().then((bodyText: any) => {
         console.info(`Network Error: ${response.status} (${response.statusText}) - ${bodyText}`);
         next();
       });
     } else {
       let isUnauthorized = false;
-      response.clone().json().then(({ errors }) => {
+      response.clone().json().then(({ errors }: any) => {
         if (errors) {
           console.info('GraphQL Errors:', errors);
           errors.some((error: any) => {
