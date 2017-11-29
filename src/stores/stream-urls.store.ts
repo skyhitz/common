@@ -7,7 +7,7 @@ require('fetch-everywhere');
 type SignatureFunction = {
   args: string,
   function: string
-}
+};
 
 /**
  * Extracts the stream url from youtube by downloading the
@@ -18,12 +18,12 @@ class StreamUrlsStore {
   public youtubeUrl = 'https://m.youtube.com';
   public signatureFunction: Function;
   public cypher: any;
-  
+
   constructor() {
   }
 
-  async loadRemotePlayer(){
-    // Calling the getVideoStreamUrl once we pre load the javascript player and signature function. 
+  async loadRemotePlayer() {
+    // Calling the getVideoStreamUrl once we pre load the javascript player and signature function.
     return this.getVideoStreamUrl('20Ov0cDPZy8');
   }
 
@@ -64,10 +64,10 @@ class StreamUrlsStore {
       let cypher: any = {};
       let functionArgs = JSON.parse(value);
       functionArgs.forEach((val: any, index: any) => {
-        cypher[val.name] = new Function(...val.args, val.functionstring)
-      })
+        cypher[val.name] = new Function(...val.args, val.functionstring);
+      });
 
-      if (cypher == {}) {
+      if (cypher === {}) {
         return null;
       }
       return cypher;
@@ -136,7 +136,7 @@ class StreamUrlsStore {
     var jsonStringFromWeb = res[0].substring(19);
     jsonStringFromWeb = jsonStringFromWeb.substring(0, jsonStringFromWeb.length - 9);
     let json = JSON.parse(jsonStringFromWeb);
-    
+
     let signatureFunction = await this.getSignatureFunction();
     let cypher = await this.getCypher();
     if (signatureFunction && cypher) {
@@ -258,7 +258,7 @@ class StreamUrlsStore {
 
   getFirstNonWebMFormat(streamInfo: any[]) {
     let firstNonWebM = streamInfo.find((info) => {
-      if (info.indexOf('webm') === -1){
+      if (info.indexOf('webm') === -1) {
         return info;
       }
     });
@@ -277,5 +277,4 @@ class StreamUrlsStore {
 
 export const streamUrlsStore = new StreamUrlsStore();
 
-  
 
