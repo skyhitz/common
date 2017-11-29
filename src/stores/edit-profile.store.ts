@@ -17,7 +17,8 @@ export class EditProfileStore {
   @observable username: string;
   @observable email: string;
   @observable phone: string;
-  @observable profileImage: any;
+  @observable profile: User;
+  @observable loadingAvatar: boolean;
 
   constructor (
     public sessionStore: SessionStore
@@ -25,7 +26,8 @@ export class EditProfileStore {
   }
 
   public disposer = observe(this.sessionStore.session, ({object}) => {
-    let { avatarUrl, displayName, description, username, email, phone } = object.user;
+    this.profile = object.user;
+    let { avatarUrl, displayName, description, username, email, phone } = this.profile;
     this.avatarUrl = avatarUrl;
     this.displayName = displayName;
     this.description = description;
@@ -35,11 +37,14 @@ export class EditProfileStore {
   });
 
   async uploadProfilePhoto(image: any) {
+    this.loadingAvatar = true;
     let data = new FormData();
     data.append('file', `${preBase64String}${image.base64}`);
+    data.append('folder', `user_${this.sessionStore.user.id}`);
     let res = await fetch(cloudinaryApiPath, { method: 'POST', body: data });
-    console.log(res);
-    // upload profile image to server.
+    let { secure_url } = await res.json();
+    this.updateAvatarUrl(secure_url);
+    this.loadingAvatar = false;
   }
 
   @action
