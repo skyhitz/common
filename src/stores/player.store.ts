@@ -43,18 +43,21 @@ export class PlayerStore {
 
   async playAsync() {
     if (this.playbackInstanceExists) {
+      this.setPlaybackState("PLAYING");
       return await this.playbackInstance.playAsync();
     }
   }
 
   async pauseAsync() {
     if (this.playbackInstanceExists) {
+      this.setPlaybackState("PAUSED");
       return await this.playbackInstance.pauseAsync();
     }
   }
 
   async stopAsync() {
     if (this.playbackInstanceExists) {
+      this.setPlaybackState("PAUSED");
       return await this.playbackInstance.stopAsync();
     }
   }
