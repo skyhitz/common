@@ -88,7 +88,6 @@ export class UserBackend {
       .then((data: any) => data.data)
       .then(({ signIn }) => signIn)
       .catch(({ graphQLErrors }) => {
-        debugger;
         let [{ message }] = graphQLErrors;
         throw message;
       });
