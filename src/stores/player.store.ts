@@ -90,9 +90,9 @@ export class PlayerStore {
 
     if (status.fullscreenUpdate === 3) {
       this.isOnFullScreenMode = false;
-      // resume video manually, 
+      // resume video manually,
       // TODO: add bug to expo client on github.
-      if (this.shouldPlay){
+      if (this.shouldPlay) {
         this.playAsync();
       }
     }
@@ -193,9 +193,9 @@ export class PlayerStore {
   }
 
   get disablePlaybackStatusUpdate(): boolean {
-    if (this.playbackState === "ENDED" 
+    if (this.playbackState === "ENDED"
       || this.playbackState === "LOADING"
-      || this.seekState === "SEEKING" 
+      || this.seekState === "SEEKING"
       || this.seekState === "SEEKED") {
       return true;
     }
@@ -220,7 +220,7 @@ export class PlayerStore {
     if (this.disablePlaybackStatusUpdate) {
       return;
     }
-      
+
     if (!status.isLoaded) {
       if (status.error) {
         const errorMsg = `Encountered a fatal error during playback: ${status.error}`;
@@ -230,7 +230,6 @@ export class PlayerStore {
       return;
     }
 
-  
     if (this.networkState === "none" && status.isBuffering) {
       this.setPlaybackState("ERROR");
       this.error =
@@ -242,7 +241,7 @@ export class PlayerStore {
       this.playbackInstancePosition = status.positionMillis;
       this.playbackInstanceDuration = status.durationMillis;
     }
-      
+
     this.shouldPlay = status.shouldPlay;
 
     this.setPlaybackState(this.getPlaybackStateFromStatus(status));
@@ -262,7 +261,7 @@ export class PlayerStore {
     }
 
     return "PAUSED";
-  };
+  }
 
   toggleShuffle() {
     this.shuffle = !this.shuffle;
@@ -339,12 +338,12 @@ export class PlayerStore {
           return true;
         }
         return false;
-      })
-      if (index === -1){
+      });
+      if (index === -1) {
         return true;
       }
       return false;
-    })
+    });
     return relatedVideoId;
   }
 
@@ -410,7 +409,7 @@ export class PlayerStore {
 
       this.pauseAsync();
     }
-  };
+  }
 
   onSeekSliderSlidingComplete = async (value: number) => {
     if (this.playbackInstance != null && this.seekState !== "SEEKED") {
@@ -436,7 +435,7 @@ export class PlayerStore {
           console.info("Seek error: ", message);
         });
     }
-  };
+  }
 
   onSeekBarTap = (evt: any) => {
     if (
@@ -451,11 +450,11 @@ export class PlayerStore {
       this.onSeekSliderValueChange();
       this.onSeekSliderSlidingComplete(value);
     }
-  };
+  }
 
   onSliderLayout = (evt: any) => {
     this.sliderWidth = evt.nativeEvent.layout.width;
-  };
+  }
 
   setNetworkState(state: any) {
     this.networkState = state;
