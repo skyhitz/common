@@ -27,6 +27,9 @@ export class EditProfileStore {
 
   public disposer = observe(this.sessionStore.session, ({object}) => {
     this.profile = object.user;
+    if (!this.profile) {
+      return;
+    }
     let { avatarUrl, displayName, description, username, email, phone } = this.profile;
     this.avatarUrl = avatarUrl;
     this.displayName = displayName;
