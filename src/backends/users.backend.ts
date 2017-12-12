@@ -25,6 +25,54 @@ export class UsersBackend {
     .then(({ users }: any) => users.map((user: any) =>  new User(user)))
     .catch(e => console.error(e));
   }
+
+  async getRecentSearches(): Promise<User[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      usersRecentSearches {
+        avatarUrl
+        bannerUrl
+        displayName
+        username
+        reputation
+        id
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ usersRecentSearches }: any) => usersRecentSearches.map((user: any) => new User(user)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
+  }
+
+  async getTopSearches(): Promise<User[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      usersTopSearches {
+        avatarUrl
+        bannerUrl
+        displayName
+        username
+        reputation
+        id
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ usersTopSearches }: any) => usersTopSearches.map((user: any) => new User(user)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
+  }
 }
 
 export const usersBackend = new UsersBackend();

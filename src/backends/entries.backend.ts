@@ -117,6 +117,58 @@ export class EntriesBackend {
         return this.getById(id);
       });
   }
+
+  async getRecentSearches(): Promise<Entry[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      entriesRecentSearches {
+        avatarUrlSmall
+        avatarUrlMedium
+        avatarUrlLarge
+        userDisplayName
+        description
+        title
+        id
+        viewCount
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ entriesRecentSearches }: any) => entriesRecentSearches.map((entry: any) => new Entry(entry)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
+  }
+
+  async getTopSearches(): Promise<Entry[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      entriesTopSearches {
+        avatarUrlSmall
+        avatarUrlMedium
+        avatarUrlLarge
+        userDisplayName
+        description
+        title
+        id
+        viewCount
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ entriesTopSearches }: any) => entriesTopSearches.map((entry: any) => new Entry(entry)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
+  }
 }
 
 export const entriesBackend = new EntriesBackend();
