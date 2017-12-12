@@ -123,7 +123,7 @@ export class EntriesBackend {
     .query({
       query: gql`
     {
-      entriesRecentSearches {
+      recentEntrySearches {
         avatarUrlSmall
         avatarUrlMedium
         avatarUrlLarge
@@ -137,7 +137,7 @@ export class EntriesBackend {
     `
     })
     .then((data: any) => data.data)
-    .then(({ entriesRecentSearches }: any) => entriesRecentSearches.map((entry: any) => new Entry(entry)))
+    .then(({ recentEntrySearches }: any) => recentEntrySearches.map((entry: any) => new Entry(entry)))
     .catch(e => {
       console.info(e);
       return [];
@@ -149,7 +149,7 @@ export class EntriesBackend {
     .query({
       query: gql`
     {
-      entriesTopSearches {
+      topEntrySearches {
         avatarUrlSmall
         avatarUrlMedium
         avatarUrlLarge
@@ -163,7 +163,7 @@ export class EntriesBackend {
     `
     })
     .then((data: any) => data.data)
-    .then(({ entriesTopSearches }: any) => entriesTopSearches.map((entry: any) => new Entry(entry)))
+    .then(({ topEntrySearches }: any) => topEntrySearches.map((entry: any) => new Entry(entry)))
     .catch(e => {
       console.info(e);
       return [];
