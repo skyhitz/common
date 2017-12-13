@@ -43,7 +43,7 @@ export class UpdatePasswordValidationStore {
 
     if (confirmationPassword !== password) {
       this.passwordConfirmationValid = false;
-      this.passwordConfirmationError = "Passwords don't match.";
+      this.passwordConfirmationError = `Passwords don't match.`;
       return;
     }
 

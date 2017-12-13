@@ -1,6 +1,6 @@
-import { client } from "./apollo-client.backend";
-import gql from "graphql-tag";
-import { Entry } from "../models/entry.model";
+import { client } from './apollo-client.backend';
+import gql from 'graphql-tag';
+import { Entry } from '../models/entry.model';
 
 export class EntriesBackend {
   async search(q: string) {
@@ -116,6 +116,58 @@ export class EntriesBackend {
       .catch(e => {
         return this.getById(id);
       });
+  }
+
+  async getRecentSearches(): Promise<Entry[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      recentEntrySearches {
+        avatarUrlSmall
+        avatarUrlMedium
+        avatarUrlLarge
+        userDisplayName
+        description
+        title
+        id
+        viewCount
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ recentEntrySearches }: any) => recentEntrySearches.map((entry: any) => new Entry(entry)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
+  }
+
+  async getTopSearches(): Promise<Entry[]> {
+    return client
+    .query({
+      query: gql`
+    {
+      topEntrySearches {
+        avatarUrlSmall
+        avatarUrlMedium
+        avatarUrlLarge
+        userDisplayName
+        description
+        title
+        id
+        viewCount
+      }
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ topEntrySearches }: any) => topEntrySearches.map((entry: any) => new Entry(entry)))
+    .catch(e => {
+      console.info(e);
+      return [];
+    });
   }
 }
 

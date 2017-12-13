@@ -17,10 +17,15 @@
     "no-internal-module": false,
     "no-trailing-whitespace": true,
     "no-var-keyword": false,
+    "no-unused-variable": true,    
     "one-line": [
       true,
       "check-open-brace",
       "check-whitespace"
+    ],
+    "quotemark": [
+      true,
+      "single"
     ],
     "semicolon": [
       true,

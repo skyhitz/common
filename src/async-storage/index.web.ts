@@ -1,7 +1,7 @@
 const merge = require('lodash.merge');
 let localStorage: any;
 
-if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
   localStorage = window.localStorage;
 }
 

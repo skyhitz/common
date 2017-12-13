@@ -1,7 +1,7 @@
 const functionExtractor = require('function-extractor');
 const functionExtract = require('fn-extractor');
 import AsyncStorage from '../async-storage';
-import { observable } from "mobx";
+import { observable } from 'mobx';
 require('fetch-everywhere');
 
 type SignatureFunction = {

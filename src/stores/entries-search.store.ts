@@ -1,13 +1,21 @@
 import { Entry } from '../models/entry.model';
 import { entriesBackend } from '../backends/entries.backend';
-import { observable, observe } from 'mobx';
+import { observable, observe, computed } from 'mobx';
 import { List } from 'immutable';
 const debounce = require('lodash.debounce');
 
 export class EntriesSearchStore {
   @observable searching: boolean = false;
+  @observable loadingRecentSearches: boolean = false;
+  @observable loadingTopSearches: boolean = false;
   @observable query: string = '';
   @observable public entries: List<Entry> = List([]);
+  @observable public recentSearches: List<Entry> = List([]);
+  @observable public topSearches: List<Entry> = List([]);
+  @computed get active () {
+    return !!this.query;
+  }
+
   constructor (
     public queryObservable: any
   ) {
@@ -34,6 +42,32 @@ export class EntriesSearchStore {
 
   public setEntries(entries: List<Entry>) {
     this.entries = entries;
+  }
+
+  public setRecentSearches(entries: List<Entry>) {
+    this.recentSearches = entries;
+  }
+
+  public setTopSearches(entries: List<Entry>) {
+    this.topSearches = entries;
+  }
+
+  public getRecentSearches() {
+    this.loadingRecentSearches = true;
+    return entriesBackend.getRecentSearches()
+      .then(entries => {
+        this.setRecentSearches(List(entries));
+        this.loadingRecentSearches = false;
+      });
+  }
+
+  public getTopSearches() {
+    this.loadingTopSearches = true;
+    return entriesBackend.getTopSearches()
+      .then(entries => {
+        this.setTopSearches(List(entries));
+        this.loadingTopSearches = false;
+      });
   }
 
 }

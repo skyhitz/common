@@ -12,7 +12,7 @@ export class SignInValidationStore {
   }
 
   validateUsernameOrEmail(usernameOrEmail: string) {
-    if (!usernameOrEmail){
+    if (!usernameOrEmail) {
       this.usernameOrEmailValid = false;
       this.usernameOrEmailError = 'Username is required.';
       return;
@@ -20,7 +20,7 @@ export class SignInValidationStore {
 
     if (usernameOrEmail.length < 2) {
       this.usernameOrEmailValid = false;
-      this.usernameOrEmailError = 'Enter a valid username or email.'
+      this.usernameOrEmailError = 'Enter a valid username or email.';
       return;
     }
 
@@ -45,7 +45,7 @@ export class SignInValidationStore {
     return this.passwordValid = true;
   }
 
-  @computed 
+  @computed
   get error() {
     if (this.usernameOrEmailError) {
       return this.usernameOrEmailError;
