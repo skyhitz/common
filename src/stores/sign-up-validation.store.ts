@@ -16,7 +16,7 @@ export class SignUpValidationStore {
   }
 
   validateUsername(username: string) {
-    if (!username){
+    if (!username) {
       this.usernameValid = false;
       this.usernameError = 'Username is required.';
       return;
@@ -24,7 +24,7 @@ export class SignUpValidationStore {
 
     if (username.length < 2) {
       this.usernameValid = false;
-      this.usernameError = 'Username is minimum 2 characters.'
+      this.usernameError = 'Username is minimum 2 characters.';
       return;
     }
 
@@ -48,7 +48,7 @@ export class SignUpValidationStore {
 
     if (displayName.length < 2) {
       this.displayNameValid = false;
-      this.displayNameError = 'Display name is minimum 2 characters.'
+      this.displayNameError = 'Display name is minimum 2 characters.';
       return;
     }
 
@@ -91,7 +91,7 @@ export class SignUpValidationStore {
     return this.passwordValid = true;
   }
 
-  @computed 
+  @computed
   get error() {
     if (this.usernameError) {
       return this.usernameError;

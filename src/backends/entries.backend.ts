@@ -1,6 +1,6 @@
-import { client } from "./apollo-client.backend";
-import gql from "graphql-tag";
-import { Entry } from "../models/entry.model";
+import { client } from './apollo-client.backend';
+import gql from 'graphql-tag';
+import { Entry } from '../models/entry.model';
 
 export class EntriesBackend {
   async search(q: string) {

@@ -1,7 +1,7 @@
-import { client } from "./apollo-client.backend";
-import gql from "graphql-tag";
-import { User } from "../models/user.model";
-import { SignUpForm, SignInForm } from "../types";
+import { client } from './apollo-client.backend';
+import gql from 'graphql-tag';
+import { User } from '../models/user.model';
+import { SignUpForm, SignInForm } from '../types';
 
 export class UserBackend {
   async getAuthenticatedUser() {

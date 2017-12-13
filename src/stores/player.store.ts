@@ -1,10 +1,10 @@
-import { observable, computed } from "mobx";
-import { Entry } from "../models";
-import { List } from "immutable";
-import { streamUrlsStore } from "./stream-urls.store";
+import { observable, computed } from 'mobx';
+import { Entry } from '../models';
+import { List } from 'immutable';
+import { streamUrlsStore } from './stream-urls.store';
 import { entriesBackend } from '../backends/entries.backend';
 import { youtubeApiBackend } from '../backends/youtube-api.backend';
-import { PlaybackState, SeekState, ControlsState } from "../types/index";
+import { PlaybackState, SeekState, ControlsState } from '../types/index';
 
 export class PlayerStore {
   constructor() {}
@@ -13,9 +13,9 @@ export class PlayerStore {
   @observable tabBarBottomPosition: number = 0;
   @observable loop: boolean = false;
   @observable shuffle: boolean = false;
-  @observable playbackState: PlaybackState = "LOADING";
-  @observable seekState: SeekState = "NOT_SEEKING";
-  @observable controlsState: ControlsState = "SHOWN";
+  @observable playbackState: PlaybackState = 'LOADING';
+  @observable seekState: SeekState = 'NOT_SEEKING';
+  @observable controlsState: ControlsState = 'SHOWN';
   @observable shouldPlay: boolean = false;
   @observable isOnFullScreenMode: boolean = false;
   @observable positionMillis: number = 0;
@@ -43,21 +43,21 @@ export class PlayerStore {
 
   async playAsync() {
     if (this.playbackInstanceExists) {
-      this.setPlaybackState("PLAYING");
+      this.setPlaybackState('PLAYING');
       return await this.playbackInstance.playAsync();
     }
   }
 
   async pauseAsync() {
     if (this.playbackInstanceExists) {
-      this.setPlaybackState("PAUSED");
+      this.setPlaybackState('PAUSED');
       return await this.playbackInstance.pauseAsync();
     }
   }
 
   async stopAsync() {
     if (this.playbackInstanceExists) {
-      this.setPlaybackState("PAUSED");
+      this.setPlaybackState('PAUSED');
       return await this.playbackInstance.stopAsync();
     }
   }
@@ -107,12 +107,12 @@ export class PlayerStore {
 
   async replay() {
     await this.stopAsync();
-    this.setPlaybackState("PLAYING");
+    this.setPlaybackState('PLAYING');
     return this.playAsync();
   }
 
   get isPlaying() {
-    if (this.playbackState === "PLAYING") {
+    if (this.playbackState === 'PLAYING') {
       return true;
     }
     return false;
@@ -146,18 +146,18 @@ export class PlayerStore {
     if (!entry) {
       return null;
     }
-    this.setPlaybackState("LOADING");
+    this.setPlaybackState('LOADING');
     this.entry = entry;
     this.showPlayer();
     let streamUrl;
     try {
       streamUrl = await this.getStreamUrl(this.entry.id);
     } catch (e) {
-      this.setPlaybackState("ERROR");
-      return console.error("cloud not load stream url", e);
+      this.setPlaybackState('ERROR');
+      return console.error('cloud not load stream url', e);
     }
     let loadStream = await this.loadAsync(streamUrl);
-    this.setPlaybackState("PLAYING");
+    this.setPlaybackState('PLAYING');
   }
 
   async loadPlayAndPushToCueList(entry: Entry) {
@@ -181,7 +181,7 @@ export class PlayerStore {
   }
 
   async handleEndedPlaybackState() {
-    if (this.playbackState === "ENDED") {
+    if (this.playbackState === 'ENDED') {
       if (this.shuffle) {
         let pause = await this.pauseAsync();
         if (pause) {
@@ -193,10 +193,10 @@ export class PlayerStore {
   }
 
   get disablePlaybackStatusUpdate(): boolean {
-    if (this.playbackState === "ENDED"
-      || this.playbackState === "LOADING"
-      || this.seekState === "SEEKING"
-      || this.seekState === "SEEKED") {
+    if (this.playbackState === 'ENDED'
+      || this.playbackState === 'LOADING'
+      || this.seekState === 'SEEKING'
+      || this.seekState === 'SEEKED') {
       return true;
     }
     return false;
@@ -225,15 +225,15 @@ export class PlayerStore {
       if (status.error) {
         const errorMsg = `Encountered a fatal error during playback: ${status.error}`;
         this.error = errorMsg;
-        return this.setPlaybackState("ERROR");
+        return this.setPlaybackState('ERROR');
       }
       return;
     }
 
-    if (this.networkState === "none" && status.isBuffering) {
-      this.setPlaybackState("ERROR");
+    if (this.networkState === 'none' && status.isBuffering) {
+      this.setPlaybackState('ERROR');
       this.error =
-        "You are probably offline. Please make sure you are connected to the Internet to watch this video";
+        'You are probably offline. Please make sure you are connected to the Internet to watch this video';
       return;
     }
 
@@ -249,18 +249,18 @@ export class PlayerStore {
 
   getPlaybackStateFromStatus = (status: any) => {
     if (status.didJustFinish && !status.isLooping) {
-      return "ENDED";
+      return 'ENDED';
     }
 
     if (status.isPlaying) {
-      return "PLAYING";
+      return 'PLAYING';
     }
 
     if (status.isBuffering) {
-      return "BUFFERING";
+      return 'BUFFERING';
     }
 
-    return "PAUSED";
+    return 'PAUSED';
   }
 
   toggleShuffle() {
@@ -276,7 +276,7 @@ export class PlayerStore {
   }
 
   async playPrev() {
-    this.setPlaybackState("LOADING");
+    this.setPlaybackState('LOADING');
     this.pauseAsync();
     if (this.isCurrentIndexAtTheStartOfCue) {
       let entry = await this.getRelatedVideo();
@@ -300,7 +300,7 @@ export class PlayerStore {
   }
 
   async playNext() {
-    this.setPlaybackState("LOADING");
+    this.setPlaybackState('LOADING');
     this.pauseAsync();
     // if the user is located in the last item of the cue list, play the
     // next one from related video.
@@ -367,11 +367,11 @@ export class PlayerStore {
     const padWithZero = (value: number) => {
       const result = value.toString();
       if (value < 10) {
-        return "0" + result;
+        return '0' + result;
       }
       return result;
     };
-    return padWithZero(minutes) + ":" + padWithZero(seconds);
+    return padWithZero(minutes) + ':' + padWithZero(seconds);
   }
 
   get durationDisplay() {
@@ -400,10 +400,10 @@ export class PlayerStore {
   onSeekSliderValueChange = () => {
     if (
       this.playbackInstance !== null &&
-      this.seekState !== "SEEKING" &&
-      this.seekState !== "SEEKED"
+      this.seekState !== 'SEEKING' &&
+      this.seekState !== 'SEEKED'
     ) {
-      this.setSeekState("SEEKING");
+      this.setSeekState('SEEKING');
 
       this.shouldPlayAtEndOfSeek = this.shouldPlay;
 
@@ -412,13 +412,13 @@ export class PlayerStore {
   }
 
   onSeekSliderSlidingComplete = async (value: number) => {
-    if (this.playbackInstance != null && this.seekState !== "SEEKED") {
+    if (this.playbackInstance != null && this.seekState !== 'SEEKED') {
 
-      this.setSeekState("SEEKED");
+      this.setSeekState('SEEKED');
       // If the video is going to play after seek, the user expects a spinner.
       // Otherwise, the user expects the play button
       this.setPlaybackState(
-        this.shouldPlayAtEndOfSeek ? "BUFFERING" : "PAUSED"
+        this.shouldPlayAtEndOfSeek ? 'BUFFERING' : 'PAUSED'
       );
       this.playbackInstance
         .setStatusAsync({
@@ -426,13 +426,13 @@ export class PlayerStore {
           shouldPlay: this.shouldPlayAtEndOfSeek
         })
         .then((status: any) => {
-          this.setSeekState("NOT_SEEKING");
+          this.setSeekState('NOT_SEEKING');
           this.setPlaybackState(
             this.getPlaybackStateFromStatus(status)
           );
         })
         .catch((message: any) => {
-          console.info("Seek error: ", message);
+          console.info('Seek error: ', message);
         });
     }
   }
@@ -440,10 +440,10 @@ export class PlayerStore {
   onSeekBarTap = (evt: any) => {
     if (
       !(
-        this.playbackState === "LOADING" ||
-        this.playbackState === "ENDED" ||
-        this.playbackState === "ERROR" ||
-        this.controlsState !== "SHOWN"
+        this.playbackState === 'LOADING' ||
+        this.playbackState === 'ENDED' ||
+        this.playbackState === 'ERROR' ||
+        this.controlsState !== 'SHOWN'
       )
     ) {
       const value = evt.nativeEvent.locationX / this.sliderWidth;
