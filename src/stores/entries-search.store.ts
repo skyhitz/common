@@ -70,6 +70,10 @@ export class EntriesSearchStore {
       });
   }
 
+  public addRecentEntrySearch(id: string) {
+    return entriesBackend.addRecentEntrySearch(id);
+  }
+
 }
 
 

@@ -69,6 +69,10 @@ export class UsersSearchStore {
       });
   }
 
+  public addRecentUserSearch(id: string) {
+    return usersBackend.addRecentUserSearch(id);
+  }
+
 }
 
 

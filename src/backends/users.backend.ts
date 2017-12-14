@@ -73,6 +73,19 @@ export class UsersBackend {
       return [];
     });
   }
+
+  async addRecentUserSearch(id: string) {
+    return client
+    .mutate({
+      mutation: gql`
+    mutation {
+      addRecentUserSearch(id: "${id}")
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ addRecentUserSearch }) => addRecentUserSearch);
+  }
 }
 
 export const usersBackend = new UsersBackend();
