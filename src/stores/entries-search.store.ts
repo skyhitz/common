@@ -70,8 +70,9 @@ export class EntriesSearchStore {
       });
   }
 
-  public addRecentEntrySearch(id: string) {
-    return entriesBackend.addRecentEntrySearch(id);
+  public async addRecentEntrySearch(id: string) {
+    await entriesBackend.addRecentEntrySearch(id);
+    this.getRecentSearches();
   }
 
 }

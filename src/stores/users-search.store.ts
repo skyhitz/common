@@ -69,8 +69,9 @@ export class UsersSearchStore {
       });
   }
 
-  public addRecentUserSearch(id: string) {
-    return usersBackend.addRecentUserSearch(id);
+  public async addRecentUserSearch(id: string) {
+    await usersBackend.addRecentUserSearch(id);
+    this.getRecentSearches();
   }
 
 }
