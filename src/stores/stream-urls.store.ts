@@ -189,20 +189,20 @@ class StreamUrlsStore {
   }
 
   extractSignatureFunctions(javascriptString: string) {
-    let pattern = /"signature",([a-zA-Z0-9$]){2}\({1}/;
+    let pattern = /"signature",([a-zA-Z0-9_$]){2}\({1}/;
     let match = pattern.exec(javascriptString);
     let matchPattern = /,(.*)\(/;
     let functionName = matchPattern.exec(match[0])[1];
     let functions = functionExtractor.parse(javascriptString);
     let signFunc = functions.find((f: any) => functionName === f.name);
     let signatureFunctionString = javascriptString.substring(signFunc.blockStart + 1, signFunc.end - 1);
-    let cypherPatternFunction = /;{1}([a-zA-Z]){2}\.{1}/;
+    let cypherPatternFunction = /;{1}([a-zA-Z0-9_$]){2}\.{1}/;
     let matchCypher = cypherPatternFunction.exec(signatureFunctionString);
     let cypherFunctionMatch = matchCypher[0];
     let cypherFunctionName = cypherFunctionMatch.substring(1, cypherFunctionMatch.length - 1);
     let cypherFunction = this.extractCodeBetweenPatterns(`var ${cypherFunctionName}=`, ')}}', javascriptString);
     this.cypher = this.extractCypherFunctions(cypherFunction);
-    signatureFunctionString = signatureFunctionString.replace(new RegExp(cypherFunctionName, 'g'), 'this.cypher');
+    signatureFunctionString = signatureFunctionString.replace(new RegExp('[' + cypherFunctionName + ']{2}', 'g'), 'this.cypher');
     this.signatureFunction = new Function(signFunc.params[0].name, signatureFunctionString);
     this.storeSignatureFunction({ args: signFunc.params[0].name, function: signatureFunctionString });
   }
