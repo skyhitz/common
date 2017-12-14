@@ -91,6 +91,19 @@ export class EntriesBackend {
       });
   }
 
+  async addRecentEntrySearch(id: string) {
+    return client
+    .mutate({
+      mutation: gql`
+    mutation {
+      addRecentEntrySearch(id: "${id}")
+    }
+    `
+    })
+    .then((data: any) => data.data)
+    .then(({ addRecentEntrySearch }) => addRecentEntrySearch);
+  }
+
   async create(id: string) {
     return client
       .mutate({
