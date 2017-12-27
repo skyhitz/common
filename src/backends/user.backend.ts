@@ -172,6 +172,74 @@ export class UserBackend {
     });
   }
 
+  async signInWithFacebook(token: string) {
+    return client
+      .mutate({
+        mutation: gql`
+      mutation {
+        signInWithFacebook(token: "${token}"){
+          ... on User {
+            avatarUrl
+            bannerUrl
+            displayName
+            reputation
+            username
+            id
+            youtubeSubscriberCount
+            jwt
+            publishedAt
+            userType
+            email
+            description
+            phone
+          }
+          ... on UsernameAndEmail {
+            username
+            email
+          }
+        }
+      }
+      `
+      })
+      .then((data: any) => data.data)
+      .then(({ signInWithFacebook }) => signInWithFacebook)
+      .catch(({ graphQLErrors }) => {
+        let [{ message }] = graphQLErrors;
+        throw message;
+      });
+  }
+
+  async confirmUsernameAndEmail(username: string, email: string, token: string) {
+    return client
+      .mutate({
+        mutation: gql`
+      mutation {
+        confirmUsernameAndEmail(username: "${username}", email: "${email}", token: "${token}"){
+          avatarUrl
+          bannerUrl
+          displayName
+          reputation
+          username
+          id
+          youtubeSubscriberCount
+          jwt
+          publishedAt
+          userType
+          email
+          description
+          phone
+        }
+      }
+      `
+      })
+      .then((data: any) => data.data)
+      .then(({ confirmUsernameAndEmail }) => confirmUsernameAndEmail)
+      .catch(({ graphQLErrors }) => {
+        let [{ message }] = graphQLErrors;
+        throw message;
+      });
+  }
+
 }
 
 export const userBackend = new UserBackend();

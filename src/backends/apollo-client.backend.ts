@@ -3,6 +3,8 @@ import { observable } from 'mobx';
 import LocalStorage from '../async-storage';
 const globalAny: any = global;
 globalAny.fetch = require('fetch-everywhere');
+import fragmentMatcher from '../apollo/fragment-matcher';
+
 let graphqlUrl;
 let dev;
 if (typeof __DEV__ !== undefined && __DEV__) {
@@ -76,5 +78,6 @@ networkInterface.useAfter([{
 }]);
 
 export const client = new ApolloClient({
+  fragmentMatcher,
   networkInterface: networkInterface,
 });
