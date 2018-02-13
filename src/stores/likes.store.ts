@@ -13,6 +13,8 @@ export class LikesStore {
   @observable entryLikesCount: number;
   @observable userLikes: List<Entry> = List([]);
   @observable userLikesCount: number;
+  @observable user: User;
+
   public viewLimit: number = 8;
 
   get hasMoreLikers(): boolean {
@@ -31,7 +33,8 @@ export class LikesStore {
   }
 
   constructor (
-    public observables: IObservableObject
+    public observables: IObservableObject,
+    public session: IObservableObject,
   ) {
   }
 
@@ -41,6 +44,10 @@ export class LikesStore {
     }
     this.entry = object.entry;
     this.refreshEntryLikes(this.entry.id);
+  });
+
+  public userDisposer = observe(this.session, ({object}) => {
+    this.user = object.user;
   });
 
   public refreshEntryLikes(id: string) {
@@ -67,27 +74,40 @@ export class LikesStore {
       });
   }
 
-  async unlike(id: string) {
-    this.ids = this.ids.delete(id);
-    let unliked = await likesBackend.like(id, false);
+  async unlike(entry: Entry) {
+    this.ids = this.ids.delete(entry.id);
+    let index = this.userLikes.findIndex(like => like.id === entry.id)
+    this.userLikes = this.userLikes.delete(index);
+    let unliked = await likesBackend.like(entry.id, false);
     if (!unliked) {
-      this.ids = this.ids.add(id);
+      this.ids = this.ids.add(entry.id);
+      this.userLikes = this.userLikes.push(entry);
     }
+    this.userLikesCount = this.userLikes.size;
+
+    let userIndex = this.entryLikes.findIndex(like => like.id === this.user.id)
+    this.entryLikes = this.entryLikes.delete(userIndex);
   }
 
-  async like(id: string) {
-    this.ids = this.ids.add(id);
-    let liked = await likesBackend.like(id);
+  async like(entry: Entry) {
+    this.ids = this.ids.add(entry.id);
+    this.userLikes = this.userLikes.push(entry);
+    let liked = await likesBackend.like(entry.id);
     if (!liked) {
-      this.ids = this.ids.remove(id);
+      this.ids = this.ids.remove(entry.id);
+      let index = this.userLikes.findIndex(like => like.id === entry.id)
+      this.userLikes = this.userLikes.delete(index);
     }
+    this.userLikesCount = this.userLikes.size;
+
+    this.entryLikes = this.entryLikes.push(this.user);
   }
 
-  public toggleLike(id: string) {
+  public toggleLike(entry: Entry) {
     if (this.isLiked) {
-      return this.unlike(id);
+      return this.unlike(entry);
     }
-    this.like(id);
+    this.like(entry);
   }
 
   get isLiked() {

@@ -24,4 +24,4 @@ export const entriesSearchStore = new EntriesSearchStore(inputSearchStore.query)
 export const usersSearchStore = new UsersSearchStore(inputSearchStore.query);
 export const profileStore = new ProfileStore();
 export const editProfileStore = new EditProfileStore(sessionStore);
-export const likesStore = new LikesStore(playerStore.observables);
+export const likesStore = new LikesStore(playerStore.observables, sessionStore.session);

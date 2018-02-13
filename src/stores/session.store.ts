@@ -1,4 +1,4 @@
-import { observable, observe, computed } from 'mobx';
+import { observable, observe, computed, IObservableObject } from 'mobx';
 import { User } from '../models';
 import { List } from 'immutable';
 import { userBackend } from '../backends/user.backend';
@@ -7,7 +7,7 @@ import { SignUpForm, SignInForm } from '../types';
 import LocalStorage from '../async-storage';
 
 export class SessionStore {
-  public session: {user: User} = observable({ user: null });
+  public session: {user: User} & IObservableObject = observable({ user: null });
   @computed get user() {
     return this.session.user;
   }
