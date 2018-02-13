@@ -8,7 +8,12 @@ import { PlaybackState, SeekState, ControlsState } from '../types/index';
 
 export class PlayerStore {
   constructor() {}
-  @observable entry: Entry;
+  public observables = observable({
+    entry: null
+  });
+  @computed get entry(): Entry {
+    return this.observables.entry;
+  }
   @observable show: boolean = false;
   @observable tabBarBottomPosition: number = 0;
   @observable loop: boolean = false;
@@ -147,7 +152,7 @@ export class PlayerStore {
       return null;
     }
     this.setPlaybackState('LOADING');
-    this.entry = entry;
+    this.observables.entry = entry;
     this.showPlayer();
     let streamUrl;
     try {
