@@ -34,7 +34,18 @@ export class PlayerStore {
   @observable cueList: List<Entry> = List([]);
   @observable currentIndex: number = 0;
   @observable retryTimes: number = 0;
+  @observable playlistMode: boolean = false;
   playbackInstance: any;
+
+  setPlaylistMode(entries: List<Entry>) {
+    this.playlistMode = true;
+    this.cueList = entries;
+  }
+
+  disablePlaylistMode() {
+    this.playlistMode = false;
+    this.cueList = List([]);
+  }
 
   setPlaybackInstance(playbackInstance: any) {
     if (playbackInstance !== null) {
@@ -151,6 +162,11 @@ export class PlayerStore {
     if (!entry) {
       return null;
     }
+
+    if (this.cueList.findIndex((item) => item.id === entry.id) !== -1) {
+      this.currentIndex = this.cueList.findIndex((item) => item.id === entry.id);
+    }
+
     this.setPlaybackState('LOADING');
     this.observables.entry = entry;
     this.showPlayer();
@@ -166,6 +182,7 @@ export class PlayerStore {
   }
 
   async loadPlayAndPushToCueList(entry: Entry) {
+    this.disablePlaylistMode();
     this.loadAndPlay(entry);
     this.cueList = this.cueList.push(this.entry);
     this.currentIndex = this.cueList.size - 1;
@@ -285,6 +302,16 @@ export class PlayerStore {
     this.pauseAsync();
     if (this.isCurrentIndexAtTheStartOfCue) {
       let entry = await this.getRelatedVideo();
+
+      // Override the value if playlistMode was set to true, it will loop through the
+      // list instead of playing a related video.
+      if (this.playlistMode) {
+        let lastIndexInCueList = this.cueList.size - 1;
+        entry = this.cueList.get(lastIndexInCueList);
+        this.currentIndex = lastIndexInCueList;
+        return this.loadAndPlay(entry);
+      }
+
       if (entry) {
         this.loadPlayAndUnshiftToCueList(entry);
       }
@@ -307,10 +334,20 @@ export class PlayerStore {
   async playNext() {
     this.setPlaybackState('LOADING');
     this.pauseAsync();
-    // if the user is located in the last item of the cue list, play the
-    // next one from related video.
+
     if (this.isCurrentIndexAtTheEndOfCue) {
+      // if the user is located in the last item of the cue list, play the
+      // next one from related video.
       let entry = await this.getRelatedVideo();
+
+      // Override the value if playlistMode was set to true, it will loop through the
+      // list instead of playing a related video.
+      if (this.playlistMode) {
+        entry = this.cueList.get(0);
+        this.currentIndex = 0;
+        return this.loadAndPlay(entry);
+      }
+
       if (entry) {
         this.loadPlayAndPushToCueList(entry);
       }
