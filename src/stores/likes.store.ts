@@ -29,7 +29,7 @@ export class LikesStore {
   }
 
   kFormatter(num: number) {
-    return num > 999 ? (num/1000).toFixed(1) + 'k' : num
+    return num > 999 ? (num / 1000).toFixed(1) + 'k' : num;
   }
 
   constructor (
@@ -76,7 +76,7 @@ export class LikesStore {
 
   async unlike(entry: Entry) {
     this.ids = this.ids.delete(entry.id);
-    let index = this.userLikes.findIndex(like => like.id === entry.id)
+    let index = this.userLikes.findIndex(like => like.id === entry.id);
     this.userLikes = this.userLikes.delete(index);
     let unliked = await likesBackend.like(entry.id, false);
     if (!unliked) {
@@ -85,7 +85,7 @@ export class LikesStore {
     }
     this.userLikesCount = this.userLikes.size;
 
-    let userIndex = this.entryLikes.findIndex(like => like.id === this.user.id)
+    let userIndex = this.entryLikes.findIndex(like => like.id === this.user.id);
     this.entryLikes = this.entryLikes.delete(userIndex);
   }
 
@@ -95,7 +95,7 @@ export class LikesStore {
     let liked = await likesBackend.like(entry.id);
     if (!liked) {
       this.ids = this.ids.remove(entry.id);
-      let index = this.userLikes.findIndex(like => like.id === entry.id)
+      let index = this.userLikes.findIndex(like => like.id === entry.id);
       this.userLikes = this.userLikes.delete(index);
     }
     this.userLikesCount = this.userLikes.size;
