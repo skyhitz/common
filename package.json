@@ -1,6 +1,6 @@
 {
   "name": "skyhitz-common",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Skyhitz Common Module for State management",
   "author": "Alejo Mendoza",
   "license": "MIT",
@@ -24,8 +24,8 @@
     "typescript": "^2.2.2"
   },
   "devDependencies": {
-    "tslint": "^5.5.0",
-    "ts-node": "3.1.0"
+    "ts-node": "3.1.0",
+    "tslint": "^5.5.0"
   },
   "peerDependencies": {
     "react-native": "^0.48"
