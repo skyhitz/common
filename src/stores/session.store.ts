@@ -107,7 +107,8 @@ export class SessionStore {
   async confirmUsernameAndEmail(username: string, email: string, token: string) {
     let userPayload = await userBackend.confirmUsernameAndEmail(username, email, token);
     await this.setUser(userPayload);
-    return this.session.user = new User(userPayload);
+    this.session.user = new User(userPayload);
+    return this.session.user;
   }
 
 }

@@ -11,6 +11,7 @@ import { UsersSearchStore } from './users-search.store';
 import { ProfileStore } from './profile.store';
 import { EditProfileStore } from './edit-profile.store';
 import { LikesStore } from './likes.store';
+import { PlaylistsStore } from './playlists.store';
 
 export const sessionStore = new SessionStore();
 export const signUpValidationStore = new SignUpValidationStore();
@@ -25,3 +26,4 @@ export const usersSearchStore = new UsersSearchStore(inputSearchStore.query);
 export const profileStore = new ProfileStore();
 export const editProfileStore = new EditProfileStore(sessionStore);
 export const likesStore = new LikesStore(playerStore.observables, sessionStore.session);
+export const playlistsStore = new PlaylistsStore(sessionStore);
