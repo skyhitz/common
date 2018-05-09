@@ -126,6 +126,12 @@ export class PlaylistsStore {
     this.diselectEntryToBeAdded();
   }
 
+  async removeEntryFromPlaylist(playlistId: string, entryId: string) {
+    await playlistsBackend.removeEntryFromPlaylist(playlistId, entryId);
+    await this.refreshPlaylists();
+    this.diselectEntryToBeAdded();
+  }
+
 }
 
 

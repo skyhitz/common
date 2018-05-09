@@ -73,6 +73,20 @@ export class PlaylistsBackend {
       .then(({ updatePlaylist }: any) => updatePlaylist)
       .catch(e => console.error(e));
   }
+
+  async removeEntryFromPlaylist(playlistId: string, entryId: string): Promise<string> {
+    return client
+    .mutate({
+      mutation: gql`
+        mutation {
+          updatePlaylist(action: "remove", id: "${playlistId}", ids: "${entryId}")
+      }
+      `
+      })
+      .then((data: any) => data.data)
+      .then(({ updatePlaylist }: any) => updatePlaylist)
+      .catch(e => console.error(e));
+  }
 }
 
 export const playlistsBackend = new PlaylistsBackend();
