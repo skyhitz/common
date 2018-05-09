@@ -3,11 +3,9 @@ import { entriesBackend } from '../backends/entries.backend';
 import { observable, observe, action } from 'mobx';
 import { userBackend } from '../backends/user.backend';
 import { SessionStore } from './session.store';
-require('fetch-everywhere');
+import { preBase64String, cloudinaryApiPath} from '../constants/constants';
 
-const preBase64String = 'data:image/jpeg;base64,';
-const cloudinaryPreset = 'ed0xgbq5';
-const cloudinaryApiPath = `https://api.cloudinary.com/v1_1/skyhitz/image/upload?upload_preset=${cloudinaryPreset}`;
+require('fetch-everywhere');
 
 export class EditProfileStore {
   @observable error: string;

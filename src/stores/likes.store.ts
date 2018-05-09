@@ -104,7 +104,7 @@ export class LikesStore {
   }
 
   public toggleLike(entry: Entry) {
-    if (this.isLiked) {
+    if (this.isEntryLiked(entry)) {
       return this.unlike(entry);
     }
     this.like(entry);
@@ -115,6 +115,13 @@ export class LikesStore {
       return false;
     }
     return this.ids.has(this.entry.id);
+  }
+
+  isEntryLiked(entry: Entry) {
+    if (!entry) {
+      return false;
+    }
+    return this.ids.has(entry.id);
   }
 }
 

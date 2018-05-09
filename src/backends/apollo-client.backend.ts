@@ -3,7 +3,8 @@ import { observable } from 'mobx';
 import LocalStorage from '../async-storage';
 const globalAny: any = global;
 globalAny.fetch = require('fetch-everywhere');
-import fragmentMatcher from '../apollo/fragment-matcher';
+import { fragmentMatcher } from '../apollo/fragment-matcher';
+import { graphqlUrlStaging, graphqlUrlMaster } from '../constants/constants';
 
 let graphqlUrl;
 let dev;
@@ -13,9 +14,9 @@ if (typeof __DEV__ !== undefined && __DEV__) {
   dev = false;
 }
 if (dev) {
-  graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/staging-api/graphql';
+  graphqlUrl = graphqlUrlStaging;
 } else {
-  graphqlUrl = 'https://us-central1-skyhitz-161021.cloudfunctions.net/master-api/graphql';
+  graphqlUrl = graphqlUrlMaster;
 }
 
 let networkInterface = createNetworkInterface({

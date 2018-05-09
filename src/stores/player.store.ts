@@ -85,21 +85,21 @@ export class PlayerStore {
     }
   }
 
-  async presentIOSFullscreenPlayer() {
+  async presentFullscreenPlayer() {
     if (this.playbackInstance) {
-      await this.playbackInstance.presentIOSFullscreenPlayer();
+      await this.playbackInstance.presentFullscreenPlayer();
       return;
     }
   }
 
-  async dismissIOSFullscreenPlayer() {
+  async dismissFullscreenPlayer() {
     if (this.playbackInstance) {
-      await this.playbackInstance.dismissIOSFullscreenPlayer();
+      await this.playbackInstance.dismissFullscreenPlayer();
       return;
     }
   }
 
-  onIOSFullscreenUpdate(status: any) {
+  onFullscreenUpdate(status: any) {
     if (status.fullscreenUpdate === 1) {
       this.isOnFullScreenMode = true;
     }
