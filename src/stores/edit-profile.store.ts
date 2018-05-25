@@ -79,7 +79,7 @@ export class EditProfileStore {
   }
 
   get canUpdate() {
-    return this.avatarUrl && this.displayName && this.description && this.username && this.email && this.phone;
+    return this.avatarUrl && this.displayName && this.description && this.username && this.email;
   }
 
   async updateProfile() {
