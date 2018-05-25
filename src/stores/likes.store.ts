@@ -38,6 +38,11 @@ export class LikesStore {
   ) {
   }
 
+  public clearLikes() {
+    this.entryLikes = List([]);
+    this.userLikes = List([]);
+  }
+
   public disposer = observe(this.observables, ({ object }) => {
     if (!object.entry) {
       return;

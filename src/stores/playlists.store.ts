@@ -24,6 +24,10 @@ export class PlaylistsStore {
   ) {
   }
 
+  public clearPlaylists() {
+    this.playlists = List([]);
+  }
+
   public setPlaylistIndex(index: number) {
     this.playlistIndex = index;
   }
