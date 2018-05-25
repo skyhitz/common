@@ -78,6 +78,10 @@ export class EditProfileStore {
     this.phone = text;
   }
 
+  get canUpdate() {
+    return this.avatarUrl && this.displayName && this.description && this.username && this.email && this.phone;
+  }
+
   async updateProfile() {
     let user;
     try {
@@ -92,6 +96,3 @@ export class EditProfileStore {
   }
 
 }
-
-
-
