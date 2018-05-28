@@ -1,6 +1,7 @@
 
 import { Payload } from './payload.model';
 import { EntryPayload, Entry } from './entry.model';
+import { List } from 'immutable';
 
 export class PlaylistPayload extends Payload {
   photoUrl: string;
@@ -8,16 +9,16 @@ export class PlaylistPayload extends Payload {
   description: string;
   id: string;
   PlaylistEntries: EntryPayload[];
-  entries?: Entry[];
+  entries?: List<Entry>;
 }
 
 export class Playlist extends PlaylistPayload {
   constructor(payload: PlaylistPayload) {
     super(payload);
-    this.entries = this.PlaylistEntries.map(entryPayload => new Entry(entryPayload));
+    this.entries = List(this.PlaylistEntries.map(entryPayload => new Entry(entryPayload)));
   }
 
   get entriesCount() {
-    return this.entries.length;
+    return this.entries.size;
   }
 }

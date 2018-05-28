@@ -181,8 +181,35 @@ export class PlayerStore {
     this.setPlaybackState('PLAYING');
   }
 
+  async playNext() {
+    this.setPlaybackState('LOADING');
+    this.pauseAsync();
+
+    if (this.isCurrentIndexAtTheEndOfCue) {
+      // Override the value if playlistMode was set to true, it will loop through the
+      // list instead of playing a related video.
+      if (this.playlistMode) {
+        let entry = this.cueList.get(0);
+        this.currentIndex = 0;
+        return this.loadAndPlay(entry);
+      }
+
+      // if the user is located in the last item of the cue list, play the
+      // next one from related video.
+      let entry = await this.getRelatedVideo();
+
+      if (entry) {
+        this.loadPlayAndPushToCueList(entry);
+      }
+      return;
+    }
+
+    this.currentIndex++;
+    let nextEntry = this.cueList.get(this.currentIndex);
+    this.loadAndPlay(nextEntry);
+  }
+
   async loadPlayAndPushToCueList(entry: Entry) {
-    this.disablePlaylistMode();
     this.loadAndPlay(entry);
     this.cueList = this.cueList.push(this.entry);
     this.currentIndex = this.cueList.size - 1;
@@ -204,13 +231,10 @@ export class PlayerStore {
 
   async handleEndedPlaybackState() {
     if (this.playbackState === 'ENDED') {
-      if (this.shuffle) {
-        let pause = await this.pauseAsync();
-        if (pause) {
-          return this.playNext();
-        }
+      let pause = await this.pauseAsync();
+      if (pause) {
+        return this.playNext();
       }
-      return this.pauseAsync();
     }
   }
 
@@ -301,16 +325,17 @@ export class PlayerStore {
     this.setPlaybackState('LOADING');
     this.pauseAsync();
     if (this.isCurrentIndexAtTheStartOfCue) {
-      let entry = await this.getRelatedVideo();
 
       // Override the value if playlistMode was set to true, it will loop through the
       // list instead of playing a related video.
       if (this.playlistMode) {
         let lastIndexInCueList = this.cueList.size - 1;
-        entry = this.cueList.get(lastIndexInCueList);
+        let entry = this.cueList.get(lastIndexInCueList);
         this.currentIndex = lastIndexInCueList;
         return this.loadAndPlay(entry);
       }
+
+      let entry = await this.getRelatedVideo();
 
       if (entry) {
         this.loadPlayAndUnshiftToCueList(entry);
@@ -329,34 +354,6 @@ export class PlayerStore {
 
   get isCurrentIndexAtTheEndOfCue() {
     return this.currentIndex === (this.cueList.size - 1);
-  }
-
-  async playNext() {
-    this.setPlaybackState('LOADING');
-    this.pauseAsync();
-
-    if (this.isCurrentIndexAtTheEndOfCue) {
-      // if the user is located in the last item of the cue list, play the
-      // next one from related video.
-      let entry = await this.getRelatedVideo();
-
-      // Override the value if playlistMode was set to true, it will loop through the
-      // list instead of playing a related video.
-      if (this.playlistMode) {
-        entry = this.cueList.get(0);
-        this.currentIndex = 0;
-        return this.loadAndPlay(entry);
-      }
-
-      if (entry) {
-        this.loadPlayAndPushToCueList(entry);
-      }
-      return;
-    }
-
-    this.currentIndex++;
-    let nextEntry = this.cueList.get(this.currentIndex);
-    this.loadAndPlay(nextEntry);
   }
 
   async getRelatedVideo() {

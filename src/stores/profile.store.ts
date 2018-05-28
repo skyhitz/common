@@ -11,23 +11,21 @@ export class ProfileStore {
   ) {
   }
 
-  public getProfileInfo(user: User) {
+  public async getProfileInfo(user: User) {
     this.user = user;
-    this.getUserEntries(user.id);
+    return this.getUserEntries(user.id);
   }
 
-  public getUserEntries(userId: string) {
+  public async getUserEntries(userId: string) {
     this.loadingEntries = true;
     this.entries = List([]);
-    return entriesBackend.getByUserId(userId)
-    .then(entries => {
-      this.setEntries(List(entries));
-      this.loadingEntries = false;
-    });
+    const entries = await entriesBackend.getByUserId(userId);
+    this.loadingEntries = false;
+    return this.setEntries(List(entries));
   }
 
   public setEntries(entries: List<Entry>) {
-    this.entries = entries;
+    return this.entries = entries;
   }
 
 }
