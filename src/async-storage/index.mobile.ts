@@ -1,8 +1,13 @@
-import { AsyncStorage } from 'react-native';
 import { TAsyncStorage } from './types';
+let AsyncStorage: TAsyncStorage;
+try {
+  AsyncStorage = require('react-native').AsyncStorage;
+} catch (e) {
+  AsyncStorage = null;
+}
 
 const API: TAsyncStorage = {
-  getItem: (key) => {
+  getItem: key => {
     return AsyncStorage.getItem(key);
   },
   setItem: (key, value) => {
@@ -14,10 +19,10 @@ const API: TAsyncStorage = {
   getAllKeys: () => {
     return AsyncStorage.getAllKeys();
   },
-  multiGet: (keys) => {
+  multiGet: keys => {
     return AsyncStorage.multiGet(keys);
   },
-  removeItem: (key) => {
+  removeItem: key => {
     return AsyncStorage.removeItem(key);
   },
   mergeItem: (key, value) => {
@@ -27,13 +32,13 @@ const API: TAsyncStorage = {
     let asyncStorage: any = AsyncStorage;
     return asyncStorage.flushGetRequests();
   },
-  multiSet: (kvPairs) => {
+  multiSet: kvPairs => {
     return AsyncStorage.multiSet(kvPairs);
   },
-  multiRemove: (keys) => {
+  multiRemove: keys => {
     return AsyncStorage.multiRemove(keys);
   },
-  multiMerge: (kvPairs) => {
+  multiMerge: kvPairs => {
     return AsyncStorage.multiMerge(kvPairs);
   },
   isAvailable: () => {
@@ -44,7 +49,7 @@ const API: TAsyncStorage = {
       available = false;
     }
     return available;
-  },
+  }
 };
 
 export default API;
