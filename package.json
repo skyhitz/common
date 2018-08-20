@@ -27,7 +27,7 @@
     "ts-node": "3.1.0",
     "tslint": "^5.5.0"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "react-native": "^0.48"
   }
 }
