@@ -7,7 +7,7 @@ export class PaymentsBackend {
       .mutate({
         mutation: gql`
     mutation {
-      subscribeUser(id: "${cardToken}")
+      subscribeUser(cardToken: "${cardToken}")
     }
     `
       })
