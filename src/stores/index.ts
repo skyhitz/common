@@ -12,6 +12,7 @@ import { ProfileStore } from './profile.store';
 import { EditProfileStore } from './edit-profile.store';
 import { LikesStore } from './likes.store';
 import { PlaylistsStore } from './playlists.store';
+import { PaymentsStore } from './payments.store';
 
 export const sessionStore = new SessionStore();
 export const signUpValidationStore = new SignUpValidationStore();
@@ -21,9 +22,15 @@ export const updatePasswordValidationStore = new UpdatePasswordValidationStore()
 export const usernameAndEmailValidationStore = new UsernameAndEmailValidationStore();
 export const playerStore = new PlayerStore();
 export const inputSearchStore = new InputSearchStore();
-export const entriesSearchStore = new EntriesSearchStore(inputSearchStore.query);
+export const entriesSearchStore = new EntriesSearchStore(
+  inputSearchStore.query
+);
 export const usersSearchStore = new UsersSearchStore(inputSearchStore.query);
 export const profileStore = new ProfileStore();
 export const editProfileStore = new EditProfileStore(sessionStore);
-export const likesStore = new LikesStore(playerStore.observables, sessionStore.session);
+export const likesStore = new LikesStore(
+  playerStore.observables,
+  sessionStore.session
+);
 export const playlistsStore = new PlaylistsStore(sessionStore);
+export const paymentsStore = new PaymentsStore();
