@@ -1,9 +1,19 @@
+import { observable } from 'mobx';
 import { paymentsBackend } from '../backends/payments.backend';
 
 export class PaymentsStore {
+  @observable
+  subscribed: boolean = false;
   constructor() {}
 
   async subscribeUser(cardToken: string) {
-    return paymentsBackend.subscribe(cardToken);
+    await paymentsBackend.subscribe(cardToken);
+    this.subscribed = true;
+    return true;
+  }
+
+  async refreshSubscription() {
+    let subscribed = await paymentsBackend.refreshSubscription();
+    this.subscribed = subscribed;
   }
 }

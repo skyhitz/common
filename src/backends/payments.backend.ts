@@ -14,6 +14,18 @@ export class PaymentsBackend {
       .then((data: any) => data.data)
       .then(({ subscribeUser }) => subscribeUser);
   }
+  async refreshSubscription() {
+    return client
+      .query({
+        query: gql`
+          {
+            paymentsInfo
+          }
+        `
+      })
+      .then((data: any) => data.data)
+      .then(({ paymentsInfo }) => paymentsInfo);
+  }
 }
 
 export const paymentsBackend = new PaymentsBackend();
