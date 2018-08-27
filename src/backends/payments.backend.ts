@@ -21,8 +21,7 @@ export class PaymentsBackend {
           {
             paymentsInfo
           }
-        `,
-        fetchPolicy: 'network-only'
+        `
       })
       .then((data: any) => data.data)
       .then(({ paymentsInfo }) => paymentsInfo);
