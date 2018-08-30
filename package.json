@@ -7,7 +7,7 @@
   "main": "index.ts",
   "engineStrict": true,
   "engines": {
-    "node": "6.11.1"
+    "node": "8.9.4"
   },
   "dependencies": {
     "@types/node": "^8.0.31",
