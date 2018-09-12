@@ -188,7 +188,7 @@ class StreamUrlsStore {
   }
 
   extractSignatureFunctions(javascriptString: string) {
-    let pattern = /"signature",([a-zA-Z0-9_$]){2}\({1}/;
+    let pattern = /\bc\s*&&\s*d\.set\([^,]+\s*,\s*([a-zA-Z0-9$]+)\(/;
     let match = pattern.exec(javascriptString);
     let matchPattern = /,(.*)\(/;
     let functionName = matchPattern.exec(match[0])[1];
