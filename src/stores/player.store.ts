@@ -1,7 +1,6 @@
 import { observable, computed } from 'mobx';
 import { Entry } from '../models';
 import { List } from 'immutable';
-import { streamUrlsStore } from './stream-urls.store';
 import { entriesBackend } from '../backends/entries.backend';
 import { youtubeApiBackend } from '../backends/youtube-api.backend';
 import { PlaybackState, SeekState, ControlsState } from '../types/index';
@@ -11,30 +10,52 @@ export class PlayerStore {
   public observables = observable({
     entry: null
   });
-  @computed get entry(): Entry {
+  @computed
+  get entry(): Entry {
     return this.observables.entry;
   }
-  @observable show: boolean = false;
-  @observable tabBarBottomPosition: number = 0;
-  @observable loop: boolean = false;
-  @observable shuffle: boolean = false;
-  @observable playbackState: PlaybackState = 'LOADING';
-  @observable seekState: SeekState = 'NOT_SEEKING';
-  @observable controlsState: ControlsState = 'SHOWN';
-  @observable shouldPlay: boolean = false;
-  @observable isOnFullScreenMode: boolean = false;
-  @observable positionMillis: number = 0;
-  @observable playbackInstancePosition: number = 0;
-  @observable playbackInstanceDuration: number = 0;
-  @observable lastPlaybackStateUpdate: number = Date.now();
-  @observable error: any;
-  @observable networkState: any;
-  @observable shouldPlayAtEndOfSeek: boolean = false;
-  @observable sliderWidth: number;
-  @observable cueList: List<Entry> = List([]);
-  @observable currentIndex: number = 0;
-  @observable retryTimes: number = 0;
-  @observable playlistMode: boolean = false;
+  @observable
+  show: boolean = false;
+  @observable
+  tabBarBottomPosition: number = 0;
+  @observable
+  loop: boolean = false;
+  @observable
+  shuffle: boolean = false;
+  @observable
+  playbackState: PlaybackState = 'LOADING';
+  @observable
+  seekState: SeekState = 'NOT_SEEKING';
+  @observable
+  controlsState: ControlsState = 'SHOWN';
+  @observable
+  shouldPlay: boolean = false;
+  @observable
+  isOnFullScreenMode: boolean = false;
+  @observable
+  positionMillis: number = 0;
+  @observable
+  playbackInstancePosition: number = 0;
+  @observable
+  playbackInstanceDuration: number = 0;
+  @observable
+  lastPlaybackStateUpdate: number = Date.now();
+  @observable
+  error: any;
+  @observable
+  networkState: any;
+  @observable
+  shouldPlayAtEndOfSeek: boolean = false;
+  @observable
+  sliderWidth: number;
+  @observable
+  cueList: List<Entry> = List([]);
+  @observable
+  currentIndex: number = 0;
+  @observable
+  retryTimes: number = 0;
+  @observable
+  playlistMode: boolean = false;
   playbackInstance: any;
 
   setPlaylistMode(entries: List<Entry>) {
@@ -134,15 +155,6 @@ export class PlayerStore {
     return false;
   }
 
-  async retryOnce() {
-    if (this.retryTimes === 0) {
-      await streamUrlsStore.clearCypher();
-      await streamUrlsStore.clearSignatureFunction();
-      await this.loadAndPlay(this.entry);
-      this.retryTimes++;
-    }
-  }
-
   async loadAsync(streamUrl: string) {
     return await this.playbackInstance.loadAsync(
       { uri: streamUrl },
@@ -150,21 +162,13 @@ export class PlayerStore {
     );
   }
 
-  async loadRemotePlayer() {
-    return await streamUrlsStore.loadRemotePlayer();
-  }
-
-  async getStreamUrl(id: string) {
-    return await streamUrlsStore.getVideoStreamUrl(id);
-  }
-
   async loadAndPlay(entry: Entry) {
     if (!entry) {
       return null;
     }
 
-    if (this.cueList.findIndex((item) => item.id === entry.id) !== -1) {
-      this.currentIndex = this.cueList.findIndex((item) => item.id === entry.id);
+    if (this.cueList.findIndex(item => item.id === entry.id) !== -1) {
+      this.currentIndex = this.cueList.findIndex(item => item.id === entry.id);
     }
 
     this.setPlaybackState('LOADING');
@@ -172,7 +176,7 @@ export class PlayerStore {
     this.showPlayer();
     let streamUrl;
     try {
-      streamUrl = await this.getStreamUrl(this.entry.id);
+      streamUrl = '';
     } catch (e) {
       this.setPlaybackState('ERROR');
       return console.error('cloud not load stream url', e);
@@ -239,10 +243,12 @@ export class PlayerStore {
   }
 
   get disablePlaybackStatusUpdate(): boolean {
-    if (this.playbackState === 'ENDED'
-      || this.playbackState === 'LOADING'
-      || this.seekState === 'SEEKING'
-      || this.seekState === 'SEEKED') {
+    if (
+      this.playbackState === 'ENDED' ||
+      this.playbackState === 'LOADING' ||
+      this.seekState === 'SEEKING' ||
+      this.seekState === 'SEEKED'
+    ) {
       return true;
     }
     return false;
@@ -250,16 +256,6 @@ export class PlayerStore {
 
   onError(e: string) {
     console.info(e);
-    // if (e === 'The AVPlayerItem instance has failed with the error code -1102 and domain "NSURLErrorDomain".') {
-    //   if (this.isCurrentIndexAtTheEndOfCue){
-    //     return this.playPrev();
-    //   }
-    //   if (this.isCurrentIndexAtTheStartOfCue){
-    //     return this.playNext();
-    //   }
-    //   return;
-    // }
-    this.retryOnce();
   }
 
   onPlaybackStatusUpdate(status: any) {
@@ -269,7 +265,9 @@ export class PlayerStore {
 
     if (!status.isLoaded) {
       if (status.error) {
-        const errorMsg = `Encountered a fatal error during playback: ${status.error}`;
+        const errorMsg = `Encountered a fatal error during playback: ${
+          status.error
+        }`;
         this.error = errorMsg;
         return this.setPlaybackState('ERROR');
       }
@@ -325,7 +323,6 @@ export class PlayerStore {
     this.setPlaybackState('LOADING');
     this.pauseAsync();
     if (this.isCurrentIndexAtTheStartOfCue) {
-
       // Override the value if playlistMode was set to true, it will loop through the
       // list instead of playing a related video.
       if (this.playlistMode) {
@@ -353,11 +350,13 @@ export class PlayerStore {
   }
 
   get isCurrentIndexAtTheEndOfCue() {
-    return this.currentIndex === (this.cueList.size - 1);
+    return this.currentIndex === this.cueList.size - 1;
   }
 
   async getRelatedVideo() {
-    let relatedVideoIds = await youtubeApiBackend.relatedVideoIds(this.entry.id);
+    let relatedVideoIds = await youtubeApiBackend.relatedVideoIds(
+      this.entry.id
+    );
     let relatedVideoId = this.findFirstRelatedVideoNotInCue(relatedVideoIds);
     let entry = await entriesBackend.getById(relatedVideoId);
     if (entry) {
@@ -371,8 +370,8 @@ export class PlayerStore {
   }
 
   findFirstRelatedVideoNotInCue(relatedVideoIds: string[]) {
-    let relatedVideoId = relatedVideoIds.find((videoId) => {
-      let index = this.cueList.findIndex((entry) => {
+    let relatedVideoId = relatedVideoIds.find(videoId => {
+      let index = this.cueList.findIndex(entry => {
         if (entry.id === videoId) {
           return true;
         }
@@ -452,7 +451,6 @@ export class PlayerStore {
 
   onSeekSliderSlidingComplete = async (value: number) => {
     if (this.playbackInstance != null && this.seekState !== 'SEEKED') {
-
       this.setSeekState('SEEKED');
       // If the video is going to play after seek, the user expects a spinner.
       // Otherwise, the user expects the play button
@@ -466,9 +464,7 @@ export class PlayerStore {
         })
         .then((status: any) => {
           this.setSeekState('NOT_SEEKING');
-          this.setPlaybackState(
-            this.getPlaybackStateFromStatus(status)
-          );
+          this.setPlaybackState(this.getPlaybackStateFromStatus(status));
         })
         .catch((message: any) => {
           console.info('Seek error: ', message);
