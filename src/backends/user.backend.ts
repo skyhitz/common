@@ -8,24 +8,23 @@ export class UserBackend {
     return client
       .query({
         query: gql`
-      {
-        authenticatedUser {
-          avatarUrl
-          bannerUrl
-          displayName
-          reputation
-          username
-          id
-          youtubeSubscriberCount
-          jwt
-          publishedAt
-          userType
-          email
-          description
-          phone
-        }
-      }
-      `
+          {
+            authenticatedUser {
+              avatarUrl
+              bannerUrl
+              displayName
+              reputation
+              username
+              id
+              jwt
+              publishedAt
+              userType
+              email
+              description
+              phone
+            }
+          }
+        `
       })
       .then((data: any) => data.data)
       .then(({ authenticatedUser }) => authenticatedUser);
@@ -43,7 +42,6 @@ export class UserBackend {
           reputation
           username
           id
-          youtubeSubscriberCount
           jwt
           publishedAt
           userType
@@ -74,7 +72,6 @@ export class UserBackend {
           reputation
           username
           id
-          youtubeSubscriberCount
           jwt
           publishedAt
           userType
@@ -122,7 +119,6 @@ export class UserBackend {
         reputation
         username
         id
-        youtubeSubscriberCount
         jwt
         publishedAt
         userType
@@ -141,10 +137,17 @@ export class UserBackend {
       });
   }
 
-  async updateUser(avatarUrl: string, displayName: string, description: string, username: string, email: string, phone: string) {
+  async updateUser(
+    avatarUrl: string,
+    displayName: string,
+    description: string,
+    username: string,
+    email: string,
+    phone: string
+  ) {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
   mutation {
     updateUser(avatarUrl: "${avatarUrl}", displayName: "${displayName}", description: "${description}", username: "${username}", email: "${email}", phone: "${phone}"){
       avatarUrl
@@ -153,7 +156,6 @@ export class UserBackend {
       reputation
       username
       id
-      youtubeSubscriberCount
       jwt
       publishedAt
       userType
@@ -163,13 +165,13 @@ export class UserBackend {
     }
   }
   `
-    })
-    .then((data: any) => data.data)
-    .then(({ updateUser }) => updateUser)
-    .catch(({ graphQLErrors }) => {
-      let [{ message }] = graphQLErrors;
-      throw message;
-    });
+      })
+      .then((data: any) => data.data)
+      .then(({ updateUser }) => updateUser)
+      .catch(({ graphQLErrors }) => {
+        let [{ message }] = graphQLErrors;
+        throw message;
+      });
   }
 
   async signInWithFacebook(token: string) {
@@ -185,7 +187,6 @@ export class UserBackend {
             reputation
             username
             id
-            youtubeSubscriberCount
             jwt
             publishedAt
             userType
@@ -209,7 +210,11 @@ export class UserBackend {
       });
   }
 
-  async confirmUsernameAndEmail(username: string, email: string, token: string) {
+  async confirmUsernameAndEmail(
+    username: string,
+    email: string,
+    token: string
+  ) {
     return client
       .mutate({
         mutation: gql`
@@ -221,7 +226,6 @@ export class UserBackend {
           reputation
           username
           id
-          youtubeSubscriberCount
           jwt
           publishedAt
           userType
@@ -239,7 +243,6 @@ export class UserBackend {
         throw message;
       });
   }
-
 }
 
 export const userBackend = new UserBackend();
