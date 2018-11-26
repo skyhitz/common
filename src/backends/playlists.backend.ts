@@ -14,9 +14,7 @@ export class PlaylistsBackend {
           title
           description
           PlaylistEntries {
-            avatarUrlSmall
-            avatarUrlMedium
-            avatarUrlLarge
+            imageUrl
             userDisplayName
             description
             title

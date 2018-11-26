@@ -12,9 +12,7 @@ export class EntriesBackend {
         query: gql`
       {
         entries(search: "${q}"){
-          avatarUrlSmall
-          avatarUrlMedium
-          avatarUrlLarge
+          imageUrl
           userDisplayName
           description
           title
@@ -35,9 +33,7 @@ export class EntriesBackend {
         query: gql`
       {
         entries(id: "${id}"){
-          avatarUrlSmall
-          avatarUrlMedium
-          avatarUrlLarge
+          imageUrl
           userDisplayName
           description
           title
@@ -66,9 +62,7 @@ export class EntriesBackend {
         query: gql`
       {
         entries(userId: "${userId}"){
-          avatarUrlSmall
-          avatarUrlMedium
-          avatarUrlLarge
+          imageUrl
           userDisplayName
           description
           title
@@ -110,9 +104,7 @@ export class EntriesBackend {
         mutation: gql`
       mutation {
         createEntry(id: "${id}"){
-          avatarUrlSmall
-          avatarUrlMedium
-          avatarUrlLarge
+          imageUrl
           userDisplayName
           description
           title
@@ -131,15 +123,36 @@ export class EntriesBackend {
       });
   }
 
+  async createFromUpload(etag:string, imageUrl:string, videoUrl:string, description:string, title:string) {
+    return client
+      .mutate({
+        mutation: gql`
+      mutation {
+        createEntry(etag: "${etag}", imageUrl: "${imageUrl}", videoUrl: "${videoUrl}", description: "${description}", title: "${title}"){
+          videoUrl
+          imageUrl
+          description
+          title
+          id
+          viewCount
+          points
+        }
+      }
+      `
+      })
+      .then((data: any) => data.data)
+      .then(({ createEntry }) => {
+        return new Entry(createEntry);
+      })
+  }
+
   async getRecentSearches(): Promise<Entry[]> {
     return client
     .query({
       query: gql`
     {
       recentEntrySearches {
-        avatarUrlSmall
-        avatarUrlMedium
-        avatarUrlLarge
+        imageUrl
         userDisplayName
         description
         title
@@ -163,9 +176,7 @@ export class EntriesBackend {
       query: gql`
     {
       topEntrySearches {
-        avatarUrlSmall
-        avatarUrlMedium
-        avatarUrlLarge
+        imageUrl
         userDisplayName
         description
         title

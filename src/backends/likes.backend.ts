@@ -9,9 +9,7 @@ export class LikesBackend {
         query: gql`
       {
         userLikes(offset: 0, limit: 500) {
-          avatarUrlSmall
-          avatarUrlMedium
-          avatarUrlLarge
+          imageUrl
           userDisplayName
           description
           title

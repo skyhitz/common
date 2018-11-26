@@ -3,7 +3,7 @@ import { entriesBackend } from '../backends/entries.backend';
 import { observable, observe, action } from 'mobx';
 import { userBackend } from '../backends/user.backend';
 import { SessionStore } from './session.store';
-import { preBase64String, cloudinaryApiPath} from '../constants/constants';
+import { preBase64String, cloudinaryApiPath } from '../constants/constants';
 
 require('fetch-everywhere');
 
@@ -18,17 +18,21 @@ export class EditProfileStore {
   @observable profile: User;
   @observable loadingAvatar: boolean;
 
-  constructor (
-    public sessionStore: SessionStore
-  ) {
-  }
+  constructor(public sessionStore: SessionStore) {}
 
-  public disposer = observe(this.sessionStore.session, ({object}) => {
+  public disposer = observe(this.sessionStore.session, ({ object }) => {
     this.profile = object.user;
     if (!this.profile) {
       return;
     }
-    let { avatarUrl, displayName, description, username, email, phone } = this.profile;
+    let {
+      avatarUrl,
+      displayName,
+      description,
+      username,
+      email,
+      phone
+    } = this.profile;
     this.avatarUrl = avatarUrl;
     this.displayName = displayName;
     this.description = description;
@@ -41,7 +45,7 @@ export class EditProfileStore {
     this.loadingAvatar = true;
     let data = new FormData();
     data.append('file', `${preBase64String}${image.base64}`);
-    data.append('folder', `user_${this.sessionStore.user.id}`);
+    data.append('folder', `/app/${this.sessionStore.user.username}/images`);
     let res = await fetch(cloudinaryApiPath, { method: 'POST', body: data });
     let { secure_url } = await res.json();
     this.updateAvatarUrl(secure_url);
@@ -79,13 +83,26 @@ export class EditProfileStore {
   }
 
   get canUpdate() {
-    return this.avatarUrl && this.displayName && this.description && this.username && this.email;
+    return (
+      this.avatarUrl &&
+      this.displayName &&
+      this.description &&
+      this.username &&
+      this.email
+    );
   }
 
   async updateProfile() {
     let user;
     try {
-      user = await userBackend.updateUser(this.avatarUrl, this.displayName, this.description, this.username, this.email, this.phone);
+      user = await userBackend.updateUser(
+        this.avatarUrl,
+        this.displayName,
+        this.description,
+        this.username,
+        this.email,
+        this.phone
+      );
     } catch (e) {
       this.error = e;
       return;
@@ -94,5 +111,4 @@ export class EditProfileStore {
       return await this.sessionStore.refreshUser();
     }
   }
-
 }

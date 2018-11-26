@@ -19,10 +19,7 @@ export class PlaylistsStore {
   @observable showPlaylistsModal: boolean = false;
   @observable entryToBeAdded: Entry;
 
-  constructor(
-    private sessionStore: SessionStore
-  ) {
-  }
+  constructor(private sessionStore: SessionStore) {}
 
   public clearPlaylists() {
     this.playlists = List([]);
@@ -48,20 +45,28 @@ export class PlaylistsStore {
     return this.playlists.size;
   }
 
-  @computed get playlistToBeRemoved() {
+  @computed
+  get playlistToBeRemoved() {
     return this.playlists.get(this.removePlaylistIndex);
   }
 
-  @computed get playlist() {
+  @computed
+  get playlist() {
     return this.playlists.get(this.playlistIndex);
   }
 
-  @computed get entries() {
+  @computed
+  get entries() {
     return this.playlist.entries;
   }
 
-  @computed get canCreate() {
-    return !!(this.modalPlaylistPhotoUrl && this.modalPlaylistName && this.modalPlaylistDescription);
+  @computed
+  get canCreate() {
+    return !!(
+      this.modalPlaylistPhotoUrl &&
+      this.modalPlaylistName &&
+      this.modalPlaylistDescription
+    );
   }
 
   edit() {
@@ -76,7 +81,11 @@ export class PlaylistsStore {
     if (!this.canCreate) {
       return;
     }
-    await playlistsBackend.createPlaylist(this.modalPlaylistPhotoUrl, this.modalPlaylistName, this.modalPlaylistDescription);
+    await playlistsBackend.createPlaylist(
+      this.modalPlaylistPhotoUrl,
+      this.modalPlaylistName,
+      this.modalPlaylistDescription
+    );
     await this.refreshPlaylists();
     this.clearPlaylistFields();
   }
@@ -99,7 +108,7 @@ export class PlaylistsStore {
     this.loadingImage = true;
     let data = new FormData();
     data.append('file', `${preBase64String}${image.base64}`);
-    data.append('folder', `user_${this.sessionStore.user.id}/playlists`);
+    data.append('folder', `/app/${this.sessionStore.user.username}/images`);
     let res = await fetch(cloudinaryApiPath, { method: 'POST', body: data });
     let { secure_url } = await res.json();
     this.updateModalPlaylistPhotoUrl(secure_url);
@@ -125,7 +134,10 @@ export class PlaylistsStore {
   }
 
   async addToPlaylist(playlistId: string) {
-    await playlistsBackend.addEntryToPlaylist(playlistId, this.entryToBeAdded.id);
+    await playlistsBackend.addEntryToPlaylist(
+      playlistId,
+      this.entryToBeAdded.id
+    );
     await this.refreshPlaylists();
     this.diselectEntryToBeAdded();
   }
@@ -135,8 +147,4 @@ export class PlaylistsStore {
     await this.refreshPlaylists();
     this.diselectEntryToBeAdded();
   }
-
 }
-
-
-
