@@ -45,7 +45,6 @@ export class CreateEntryStore {
     const blob = await response.blob();
     this.updateLoadingVideo(true);
     const base64 = await this.loadFile(blob);
-    debugger;
     this.updateLoadingVideo(false);
     this.updateUploadingVideo(true);
     let id = UniqueIdGenerator.generate();
@@ -57,7 +56,6 @@ export class CreateEntryStore {
     try {
       res = await fetch(cloudinaryApiVideoPath, { method: 'POST', body: data });
       let { secure_url, etag } = await res.json();
-      debugger;
       this.updateUploadingVideo(false);
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
