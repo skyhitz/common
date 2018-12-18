@@ -14,6 +14,7 @@ import { LikesStore } from './likes.store';
 import { PlaylistsStore } from './playlists.store';
 import { PaymentsStore } from './payments.store';
 import { CreateEntryStore } from './create-entry.store';
+import { UserEntriesStore } from './user-entries.store';
 
 export const sessionStore = new SessionStore();
 export const signUpValidationStore = new SignUpValidationStore();
@@ -36,3 +37,4 @@ export const likesStore = new LikesStore(
 export const playlistsStore = new PlaylistsStore(sessionStore);
 export const paymentsStore = new PaymentsStore();
 export const createEntryStore = new CreateEntryStore(sessionStore);
+export const userEntriesStore = new UserEntriesStore(sessionStore);
