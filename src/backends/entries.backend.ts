@@ -18,6 +18,7 @@ export class EntriesBackend {
           title
           id
           viewCount
+          videoUrl
         }
       }
       `
@@ -39,6 +40,7 @@ export class EntriesBackend {
           title
           id
           viewCount
+          videoUrl
         }
       }
       `
@@ -111,6 +113,7 @@ export class EntriesBackend {
           title
           id
           viewCount
+          videoUrl
         }
       }
       `
@@ -165,6 +168,7 @@ export class EntriesBackend {
               title
               id
               viewCount
+              videoUrl
             }
           }
         `
@@ -191,6 +195,7 @@ export class EntriesBackend {
               title
               id
               viewCount
+              videoUrl
             }
           }
         `
