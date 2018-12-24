@@ -15,6 +15,7 @@ export class EntryPayload extends Payload {
   title?: string;
   id?: string;
   viewCount?: number;
+  videoUrl?: string;
 }
 
 export class Entry extends EntryPayload {

@@ -174,15 +174,10 @@ export class PlayerStore {
     this.setPlaybackState('LOADING');
     this.observables.entry = entry;
     this.showPlayer();
-    let streamUrl;
-    try {
-      streamUrl = '';
-    } catch (e) {
-      this.setPlaybackState('ERROR');
-      return console.error('cloud not load stream url', e);
-    }
-    let loadStream = await this.loadAsync(streamUrl);
+    let { videoUrl } = entry;
+    let loadStream = await this.loadAsync(videoUrl);
     this.setPlaybackState('PLAYING');
+    return loadStream;
   }
 
   async playNext() {

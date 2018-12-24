@@ -68,6 +68,7 @@ export class EntriesBackend {
           title
           id
           viewCount
+          videoUrl
         }
       }
       `
@@ -87,15 +88,15 @@ export class EntriesBackend {
 
   async addRecentEntrySearch(id: string) {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
     mutation {
       addRecentEntrySearch(id: "${id}")
     }
     `
-    })
-    .then((data: any) => data.data)
-    .then(({ addRecentEntrySearch }) => addRecentEntrySearch);
+      })
+      .then((data: any) => data.data)
+      .then(({ addRecentEntrySearch }) => addRecentEntrySearch);
   }
 
   async create(id: string) {
@@ -123,7 +124,13 @@ export class EntriesBackend {
       });
   }
 
-  async createFromUpload(etag:string, imageUrl:string, videoUrl:string, description:string, title:string) {
+  async createFromUpload(
+    etag: string,
+    imageUrl: string,
+    videoUrl: string,
+    description: string,
+    title: string
+  ) {
     return client
       .mutate({
         mutation: gql`
@@ -143,55 +150,59 @@ export class EntriesBackend {
       .then((data: any) => data.data)
       .then(({ createEntry }) => {
         return new Entry(createEntry);
-      })
+      });
   }
 
   async getRecentSearches(): Promise<Entry[]> {
     return client
-    .query({
-      query: gql`
-    {
-      recentEntrySearches {
-        imageUrl
-        userDisplayName
-        description
-        title
-        id
-        viewCount
-      }
-    }
-    `
-    })
-    .then((data: any) => data.data)
-    .then(({ recentEntrySearches }: any) => recentEntrySearches.map((entry: any) => new Entry(entry)))
-    .catch(e => {
-      console.info(e);
-      return [];
-    });
+      .query({
+        query: gql`
+          {
+            recentEntrySearches {
+              imageUrl
+              userDisplayName
+              description
+              title
+              id
+              viewCount
+            }
+          }
+        `
+      })
+      .then((data: any) => data.data)
+      .then(({ recentEntrySearches }: any) =>
+        recentEntrySearches.map((entry: any) => new Entry(entry))
+      )
+      .catch(e => {
+        console.info(e);
+        return [];
+      });
   }
 
   async getTopSearches(): Promise<Entry[]> {
     return client
-    .query({
-      query: gql`
-    {
-      topEntrySearches {
-        imageUrl
-        userDisplayName
-        description
-        title
-        id
-        viewCount
-      }
-    }
-    `
-    })
-    .then((data: any) => data.data)
-    .then(({ topEntrySearches }: any) => topEntrySearches.map((entry: any) => new Entry(entry)))
-    .catch(e => {
-      console.info(e);
-      return [];
-    });
+      .query({
+        query: gql`
+          {
+            topEntrySearches {
+              imageUrl
+              userDisplayName
+              description
+              title
+              id
+              viewCount
+            }
+          }
+        `
+      })
+      .then((data: any) => data.data)
+      .then(({ topEntrySearches }: any) =>
+        topEntrySearches.map((entry: any) => new Entry(entry))
+      )
+      .catch(e => {
+        console.info(e);
+        return [];
+      });
   }
 }
 
