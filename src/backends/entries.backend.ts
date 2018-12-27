@@ -21,8 +21,7 @@ export class EntriesBackend {
       ],
       hitsPerPage: 50
     });
-    const entries = hits.map((entry: any) => new Entry(entry));
-    return entries;
+    return hits;
   }
 
   async getById(id: string) {
