@@ -7,17 +7,16 @@ export class LikesBackend {
     return client
       .query({
         query: gql`
-      {
-        userLikes(offset: 0, limit: 500) {
-          imageUrl
-          userDisplayName
-          description
-          title
-          id
-          viewCount
-        }
-      }
-      `
+          {
+            userLikes(offset: 0, limit: 500) {
+              imageUrl
+              userDisplayName
+              description
+              title
+              id
+            }
+          }
+        `
       })
       .then((data: any) => data.data)
       .then(({ userLikes }: any) => userLikes)
@@ -46,10 +45,10 @@ export class LikesBackend {
       .then(({ entryLikes }: any) => entryLikes)
       .catch(e => console.error(e));
   }
-  async like(id:string, like = true) {
+  async like(id: string, like = true) {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
         mutation {
           likeEntry(id: "${id}", like: ${like})
         }

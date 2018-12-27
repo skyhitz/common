@@ -1,31 +1,28 @@
 import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { Entry } from '../models/entry.model';
+import { index } from '../algolia/algolia';
 
 export class EntriesBackend {
   async search(q: string) {
     if (!q) {
       return [];
     }
-    return client
-      .query({
-        query: gql`
-      {
-        entries(search: "${q}"){
-          imageUrl
-          userDisplayName
-          description
-          title
-          id
-          viewCount
-          videoUrl
-        }
-      }
-      `
-      })
-      .then((data: any) => data.data)
-      .then(({ entries }: any) => entries.map((entry: any) => new Entry(entry)))
-      .catch(e => console.error(e));
+
+    const { hits } = await index.search({
+      query: q,
+      attributesToRetrieve: [
+        'imageUrl',
+        'userDisplayName',
+        'description',
+        'title',
+        'id',
+        'videoUrl'
+      ],
+      hitsPerPage: 50
+    });
+    const entries = hits.map((entry: any) => new Entry(entry));
+    return entries;
   }
 
   async getById(id: string) {
@@ -39,7 +36,6 @@ export class EntriesBackend {
           description
           title
           id
-          viewCount
           videoUrl
         }
       }
@@ -69,7 +65,6 @@ export class EntriesBackend {
           description
           title
           id
-          viewCount
           videoUrl
         }
       }
@@ -112,7 +107,6 @@ export class EntriesBackend {
           description
           title
           id
-          viewCount
           videoUrl
         }
       }
@@ -144,8 +138,6 @@ export class EntriesBackend {
           description
           title
           id
-          viewCount
-          points
         }
       }
       `
@@ -167,7 +159,6 @@ export class EntriesBackend {
               description
               title
               id
-              viewCount
               videoUrl
             }
           }
@@ -194,7 +185,6 @@ export class EntriesBackend {
               description
               title
               id
-              viewCount
               videoUrl
             }
           }

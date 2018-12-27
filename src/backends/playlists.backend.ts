@@ -7,33 +7,37 @@ export class PlaylistsBackend {
     return client
       .query({
         query: gql`
-      {
-        userPlaylists(offset: 0, limit: 500) {
-          photoUrl
-          id
-          title
-          description
-          PlaylistEntries {
-            imageUrl
-            userDisplayName
-            description
-            title
-            id
-            viewCount
+          {
+            userPlaylists(offset: 0, limit: 500) {
+              photoUrl
+              id
+              title
+              description
+              PlaylistEntries {
+                imageUrl
+                userDisplayName
+                description
+                title
+                id
+              }
+            }
           }
-        }
-      }
-      `
-      , fetchPolicy: 'network-only'})
+        `,
+        fetchPolicy: 'network-only'
+      })
       .then((data: any) => data.data)
       .then(({ userPlaylists }: any) => userPlaylists)
       .catch(e => console.error(e));
   }
 
-  async createPlaylist(photoUrl: string, title: string, description: string): Promise<string> {
+  async createPlaylist(
+    photoUrl: string,
+    title: string,
+    description: string
+  ): Promise<string> {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
         mutation {
           updatePlaylist(photoUrl: "${photoUrl}", title: "${title}", description: "${description}")
       }
@@ -46,8 +50,8 @@ export class PlaylistsBackend {
 
   async removePlaylist(id: string): Promise<string> {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
         mutation {
           removePlaylist(id: "${id}")
       }
@@ -58,10 +62,13 @@ export class PlaylistsBackend {
       .catch(e => console.error(e));
   }
 
-  async addEntryToPlaylist(playlistId: string, entryId: string): Promise<string> {
+  async addEntryToPlaylist(
+    playlistId: string,
+    entryId: string
+  ): Promise<string> {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
         mutation {
           updatePlaylist(action: "add", id: "${playlistId}", ids: "${entryId}")
       }
@@ -72,10 +79,13 @@ export class PlaylistsBackend {
       .catch(e => console.error(e));
   }
 
-  async removeEntryFromPlaylist(playlistId: string, entryId: string): Promise<string> {
+  async removeEntryFromPlaylist(
+    playlistId: string,
+    entryId: string
+  ): Promise<string> {
     return client
-    .mutate({
-      mutation: gql`
+      .mutate({
+        mutation: gql`
         mutation {
           updatePlaylist(action: "remove", id: "${playlistId}", ids: "${entryId}")
       }

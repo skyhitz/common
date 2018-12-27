@@ -1,4 +1,3 @@
-
 import { Payload } from './payload.model';
 
 export class EntryPayload extends Payload {
@@ -8,13 +7,11 @@ export class EntryPayload extends Payload {
   commentCount?: number;
   description?: string;
   likeCount?: number;
-  points?: number;
   publishedAt?: string;
   ranking?: number;
   shareCount?: number;
   title?: string;
   id?: string;
-  viewCount?: number;
   videoUrl?: string;
 }
 
