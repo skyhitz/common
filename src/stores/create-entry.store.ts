@@ -41,9 +41,9 @@ export class CreateEntryStore {
   }
 
   async uploadVideo(video: any) {
+    this.updateLoadingVideo(true);
     const response = await fetch(video.uri);
     const blob = await response.blob();
-    this.updateLoadingVideo(true);
     const base64 = await this.loadFile(blob);
     this.updateLoadingVideo(false);
     this.updateUploadingVideo(true);
