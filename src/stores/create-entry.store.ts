@@ -60,7 +60,7 @@ export class CreateEntryStore {
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
     } catch (e) {
-      console.log(e);
+      console.log('error uploading file', e);
     }
   }
 
