@@ -2,6 +2,7 @@ import { observable, action, computed } from 'mobx';
 import {
   cloudinaryApiVideoPath,
   preBase64String,
+  preBase64StringVideo,
   cloudinaryApiPath,
   cloudinaryPreset
 } from '../constants/constants';
@@ -40,16 +41,11 @@ export class CreateEntryStore {
     });
   }
 
-  async uploadVideo(video: any) {
-    this.updateLoadingVideo(true);
-    const response = await fetch(video.uri);
-    const blob = await response.blob();
-    const base64 = await this.loadFile(blob);
-    this.updateLoadingVideo(false);
+  async uploadVideo(base64: any) {
     this.updateUploadingVideo(true);
     let id = UniqueIdGenerator.generate();
     let data = new FormData();
-    data.append('file', base64);
+    data.append('file', `${preBase64StringVideo}${base64}`);
     data.append('folder', `/app/${this.sessionStore.user.username}/videos`);
     data.append('public_id', id);
     let res;
@@ -60,7 +56,7 @@ export class CreateEntryStore {
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
     } catch (e) {
-      console.log('error uploading file', e);
+      console.log('error uploading video', e);
     }
   }
 
