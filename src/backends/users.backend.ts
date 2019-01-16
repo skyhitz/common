@@ -1,29 +1,27 @@
 import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { User } from '../models/user.model';
+import { usersIndex } from '../algolia/algolia';
 
 export class UsersBackend {
   async search(q: string) {
     if (!q) {
       return [];
     }
-    return client.query({
-      query: gql`
-      {
-        users(search: "${q}"){
-          avatarUrl
-          bannerUrl
-          displayName
-          username
-          reputation
-          id
-        }
-      }
-      `,
-    })
-    .then((data: any) => data.data)
-    .then(({ users }: any) => users.map((user: any) =>  new User(user)))
-    .catch(e => console.error(e));
+
+    const { hits } = await usersIndex.search({
+      query: q,
+      attributesToRetrieve: [
+        'avatarUrl',
+        'bannerUrl',
+        'displayName',
+        'username',
+        'reputation',
+        'id'
+      ],
+      hitsPerPage: 50
+    });
+    return hits.map((user: any) =>  new User(user));
   }
 
   async getRecentSearches(): Promise<User[]> {

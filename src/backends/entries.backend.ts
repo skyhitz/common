@@ -1,7 +1,7 @@
 import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { Entry } from '../models/entry.model';
-import { index } from '../algolia/algolia';
+import { entriesIndex } from '../algolia/algolia';
 
 export class EntriesBackend {
   async search(q: string) {
@@ -9,7 +9,7 @@ export class EntriesBackend {
       return [];
     }
 
-    const { hits } = await index.search({
+    const { hits } = await entriesIndex.search({
       query: q,
       attributesToRetrieve: [
         'imageUrl',
