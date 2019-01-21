@@ -2,6 +2,7 @@ import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { User } from '../models/user.model';
 import { usersIndex } from '../algolia/algolia';
+import { isTesting } from '../config/index';
 
 export class UsersBackend {
   async search(q: string) {
@@ -11,6 +12,7 @@ export class UsersBackend {
 
     const { hits } = await usersIndex.search({
       query: q,
+      filters: `testing = ${isTesting}`,
       attributesToRetrieve: [
         'avatarUrl',
         'bannerUrl',
