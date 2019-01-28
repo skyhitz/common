@@ -16,6 +16,7 @@ export class EntriesBackend {
       attributesToRetrieve: [
         'imageUrl',
         'userDisplayName',
+        'userUsername',
         'description',
         'title',
         'id',
@@ -63,6 +64,7 @@ export class EntriesBackend {
         entries(userId: "${userId}"){
           imageUrl
           userDisplayName
+          userUsername
           description
           title
           id
@@ -166,8 +168,10 @@ export class EntriesBackend {
         `
       })
       .then((data: any) => data.data)
-      .then(({ recentEntrySearches }: any) =>
-        recentEntrySearches.map((entry: any) => new Entry(entry))
+      .then(({ recentEntrySearches }: any) =>{
+        if (!recentEntrySearches) {return []}
+        return recentEntrySearches.map((entry: any) => new Entry(entry))
+      }
       )
       .catch(e => {
         console.info(e);

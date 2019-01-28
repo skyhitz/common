@@ -2,6 +2,7 @@ import { Payload } from './payload.model';
 
 export class EntryPayload extends Payload {
   userDisplayName?: string;
+  userUsername?: string;
   imageUrl?: string;
   userId?: number;
   commentCount?: number;
@@ -20,11 +21,4 @@ export class Entry extends EntryPayload {
     super(payload);
   }
 
-  get artistName() {
-    return this.title.split(' - ')[0] ? this.title.split(' - ')[0] : '';
-  }
-
-  get titleOnly() {
-    return this.title.split(' - ')[1] ? this.title.split(' - ')[1] : '';
-  }
 }
