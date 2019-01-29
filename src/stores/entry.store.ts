@@ -10,7 +10,7 @@ import { SessionStore } from './session.store';
 import { entriesBackend } from '../backends/entries.backend';
 import UniqueIdGenerator from '../utils/unique-id-generator';
 
-export class CreateEntryStore {
+export class EntryStore {
   @observable uploadingVideo: boolean = false;
   @observable loadingVideo: boolean = false;
   @observable artworkUrl: string;
@@ -124,6 +124,13 @@ export class CreateEntryStore {
       this.videoUrl,
       this.description,
       this.title
+    );
+  }
+
+
+  async remove(entryId: string) {
+    await entriesBackend.remove(
+      entryId
     );
   }
 }
