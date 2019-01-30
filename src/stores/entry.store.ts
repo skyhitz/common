@@ -46,7 +46,7 @@ export class EntryStore {
     let id = UniqueIdGenerator.generate();
     let data = new FormData();
     data.append('file', `${preBase64StringVideo}${base64}`);
-    data.append('folder', `/app/${this.sessionStore.user.username}/videos`);
+    data.append('folder', `/app/${this.sessionStore.user.id}/videos`);
     data.append('public_id', id);
     let res;
     try {
