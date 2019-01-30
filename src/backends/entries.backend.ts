@@ -208,12 +208,12 @@ export class EntriesBackend {
       });
   }
 
-  remove(id: string) {
+  remove(id: string, cloudinaryPublicId: string) {
     return client
       .mutate({
         mutation: gql`
       mutation {
-        removeEntry(id: "${id}")
+        removeEntry(id: "${id}", cloudinaryPublicId: "${cloudinaryPublicId}")
       }
       `
       })

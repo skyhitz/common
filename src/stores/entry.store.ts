@@ -127,10 +127,7 @@ export class EntryStore {
     );
   }
 
-
-  async remove(entryId: string) {
-    await entriesBackend.remove(
-      entryId
-    );
+  async remove(entryId: string, cloudinaryPublicId: string) {
+    await entriesBackend.remove(entryId, cloudinaryPublicId);
   }
 }

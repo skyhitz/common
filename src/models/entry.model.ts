@@ -21,4 +21,12 @@ export class Entry extends EntryPayload {
     super(payload);
   }
 
+  get cloudinaryPublicId() {
+    let prefix = 'app';
+    let lastSection = this.videoUrl
+      .split(`/${prefix}`)
+      .pop()
+      .split('.')[0];
+    return `${prefix}${lastSection}`;
+  }
 }
