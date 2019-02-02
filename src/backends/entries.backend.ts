@@ -71,7 +71,8 @@ export class EntriesBackend {
           videoUrl
         }
       }
-      `
+      `,
+        fetchPolicy: 'network-only'
       })
       .then((data: any) => data.data)
       .then(({ entries }: any) => {
