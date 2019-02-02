@@ -2,6 +2,7 @@ import { client } from './apollo-client.backend';
 import gql from 'graphql-tag';
 import { User } from '../models/user.model';
 import { SignUpForm, SignInForm } from '../types';
+import { isTesting } from '../config/index';
 
 export class UserBackend {
   async getAuthenticatedUser() {
@@ -35,7 +36,9 @@ export class UserBackend {
       .mutate({
         mutation: gql`
       mutation {
-        createUserWithEmail(displayName: "${displayName}", email: "${email}", username: "${username}", password: "${password}"){
+        createUserWithEmail(displayName: "${displayName}", email: "${email}", username: "${username}", password: "${password}", testing:"${
+          isTesting ? true : false
+        }"){
           avatarUrl
           bannerUrl
           displayName
@@ -219,7 +222,9 @@ export class UserBackend {
       .mutate({
         mutation: gql`
       mutation {
-        confirmUsernameAndEmail(username: "${username}", email: "${email}", token: "${token}"){
+        confirmUsernameAndEmail(username: "${username}", email: "${email}", token: "${token}", testing:"${
+          isTesting ? true : false
+        }"){
           avatarUrl
           bannerUrl
           displayName
