@@ -182,7 +182,9 @@ export class UserBackend {
       .mutate({
         mutation: gql`
       mutation {
-        signInWithFacebook(token: "${token}"){
+        signInWithFacebook(token: "${token}", testing:${
+          isTesting ? true : false
+        }){
           ... on User {
             avatarUrl
             bannerUrl
