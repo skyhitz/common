@@ -36,9 +36,9 @@ export class UserBackend {
       .mutate({
         mutation: gql`
       mutation {
-        createUserWithEmail(displayName: "${displayName}", email: "${email}", username: "${username}", password: "${password}", testing:"${
+        createUserWithEmail(displayName: "${displayName}", email: "${email}", username: "${username}", password: "${password}", testing:${
           isTesting ? true : false
-        }"){
+        }){
           avatarUrl
           bannerUrl
           displayName
@@ -222,9 +222,9 @@ export class UserBackend {
       .mutate({
         mutation: gql`
       mutation {
-        confirmUsernameAndEmail(username: "${username}", email: "${email}", token: "${token}", testing:"${
+        confirmUsernameAndEmail(username: "${username}", email: "${email}", token: "${token}", testing:${
           isTesting ? true : false
-        }"){
+        }){
           avatarUrl
           bannerUrl
           displayName
