@@ -103,6 +103,7 @@ export class EditProfileStore {
         this.email,
         this.phone
       );
+      await userBackend.updateAlgoliaEntriesWithUser();
     } catch (e) {
       this.error = e;
       return;
