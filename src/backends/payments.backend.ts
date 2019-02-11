@@ -19,9 +19,13 @@ export class PaymentsBackend {
       .query({
         query: gql`
           {
-            paymentsInfo
+            paymentsInfo {
+              subscribed
+              credits
+            }
           }
-        `
+        `,
+        fetchPolicy: 'network-only'
       })
       .then((data: any) => data.data)
       .then(({ paymentsInfo }) => paymentsInfo);

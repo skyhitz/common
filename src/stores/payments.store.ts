@@ -6,6 +6,8 @@ export class PaymentsStore {
   subscribed: boolean = false;
   @observable
   subscriptionLoaded: boolean = false;
+  @observable
+  credits: number = 0;
   constructor() {}
 
   async subscribeUser(cardToken: string) {
@@ -15,8 +17,9 @@ export class PaymentsStore {
   }
 
   async refreshSubscription() {
-    let subscribed = await paymentsBackend.refreshSubscription();
+    let { subscribed, credits } = await paymentsBackend.refreshSubscription();
     this.subscribed = subscribed;
+    this.credits = credits;
     this.subscriptionLoaded = true;
   }
 }
