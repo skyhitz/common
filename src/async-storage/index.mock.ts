@@ -4,42 +4,41 @@ const localStorage = require('./localstorage');
 import { TAsyncStorage } from './types';
 
 const API: TAsyncStorage = {
-  getItem: (key) => {
-    return API.multiGet([key])
-      .then(values => values[0][1]);
+  getItem: key => {
+    return API.multiGet([key]).then(values => values[0][1]);
   },
   setItem: (key, value) => {
     return API.multiSet([[key, value]]);
   },
   clear: () => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       localStorage.clear();
       resolve();
     });
   },
   getAllKeys: () => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       resolve(Object.keys(localStorage));
     });
   },
-  removeItem: (key) => {
+  removeItem: key => {
     return API.multiRemove([key]);
   },
   mergeItem: (key, value) => {
     return API.multiMerge([[key, value]]);
   },
-  multiGet: (keys) => {
-    return new Promise((resolve) => {
+  multiGet: keys => {
+    return new Promise(resolve => {
       const keyValues = keys.reduce(
         (acc, key) => acc.concat([[key, localStorage.getItem(key)]]),
-        [],
+        []
       );
       resolve(keyValues);
     });
   },
-  multiSet: (kvPairs) => {
+  multiSet: kvPairs => {
     return new Promise((resolve, reject) => {
-      const errors: any [] = [];
+      const errors: any[] = [];
 
       kvPairs.forEach(([key, value]) => {
         try {
@@ -49,14 +48,12 @@ const API: TAsyncStorage = {
         }
       });
 
-      return errors.length > 0
-        ? reject(errors)
-        : resolve();
+      return errors.length > 0 ? reject(errors) : resolve();
     });
   },
-  multiMerge: (kvPairs) => {
+  multiMerge: kvPairs => {
     return new Promise((resolve, reject) => {
-      const errors: any [] = [];
+      const errors: any[] = [];
 
       kvPairs.forEach(([key, value]) => {
         const rawValue = localStorage.getItem(key);
@@ -68,27 +65,25 @@ const API: TAsyncStorage = {
         try {
           localStorage.setItem(
             key,
-            JSON.stringify(merge(JSON.parse(rawValue), JSON.parse(value))),
+            JSON.stringify(merge(JSON.parse(rawValue), JSON.parse(value)))
           );
         } catch (error) {
           errors.push(error);
         }
       });
 
-      return errors.length > 0
-        ? reject(errors)
-        : resolve();
+      return errors.length > 0 ? reject(errors) : resolve();
     });
   },
-  multiRemove: (keys) => {
-    return new Promise((resolve) => {
+  multiRemove: keys => {
+    return new Promise(resolve => {
       keys.forEach(key => localStorage.removeItem(key));
       resolve();
     });
   },
   flushGetRequests: () => {
     console.warn('AsyncStorage.flushGetRequests: Not supported');
-  },
+  }
 };
 
 export default API;
