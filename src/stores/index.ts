@@ -15,6 +15,7 @@ import { PlaylistsStore } from './playlists.store';
 import { PaymentsStore } from './payments.store';
 import { EntryStore } from './entry.store';
 import { UserEntriesStore } from './user-entries.store';
+import { UserFavoritesStore } from './user-favorites.store';
 
 export const sessionStore = new SessionStore();
 export const signUpValidationStore = new SignUpValidationStore();
@@ -38,3 +39,6 @@ export const playlistsStore = new PlaylistsStore(sessionStore);
 export const paymentsStore = new PaymentsStore();
 export const entryStore = new EntryStore(sessionStore);
 export const userEntriesStore = new UserEntriesStore(sessionStore);
+export const userFavoritesStore = new UserFavoritesStore(
+  playerStore.observables
+);
