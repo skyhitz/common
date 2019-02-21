@@ -7,14 +7,14 @@ export class UserFavoritesBackend {
       .query({
         query: gql`
          {
-          isFavorited(id: "${id}"){
+          hasCreditFromUser(id: "${id}"){
             credits
           }
         }
       `
       })
       .then((data: any) => data.data)
-      .then(({ isFavorited }: any) => isFavorited)
+      .then(({ hasCreditFromUser }: any) => hasCreditFromUser)
       .catch(e => console.error(e));
   }
   async creditEntry(id: string, credits: number) {
