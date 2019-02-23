@@ -39,24 +39,23 @@ export class UserFavoritesStore {
   async updateFavorite(entry: Entry) {
     let { credits } = await userFavoritesBackend.isFavorited(entry.id);
     if (credits) {
+      console.log(credits);
       this.creditsSent = credits;
       this.addToFavorites(entry);
     }
   }
 
   async sendCredits(entry: Entry) {
-    console.log('just sent credits', this.counter);
-    const credited = await userFavoritesBackend.creditEntry(
-      entry.id,
-      this.counter
-    );
+    const amount = this.counter;
+    clearTimeout(this.timeout);
+    this.timeout = null;
+    this.counter = 0;
+    const credited = await userFavoritesBackend.creditEntry(entry.id, amount);
     if (!credited) {
       this.creditsSent = this.creditsSent - this.counter;
       return;
     }
-    clearTimeout(this.timeout);
-    this.timeout = null;
-    this.counter = 0;
+
     if (this.ids.has(entry.id)) {
       return;
     }
@@ -67,7 +66,7 @@ export class UserFavoritesStore {
     this.creditsSent = this.creditsSent + 1;
     this.counter = this.counter + 1;
     if (!this.timeout) {
-      this.timeout = setTimeout(() => this.sendCredits(entry), 1000);
+      this.timeout = setTimeout(() => this.sendCredits(entry), 5000);
     }
   }
 }
