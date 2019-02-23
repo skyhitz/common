@@ -13,6 +13,8 @@ export class UserFavoritesStore {
   @observable userFavorites: List<Entry> = List([]);
   @observable
   creditsSent: number = 0;
+  @observable
+  availableToCredit: boolean;
 
   constructor(public observables: IObservableObject) {}
 
@@ -29,7 +31,13 @@ export class UserFavoritesStore {
     }
     this.entry = object.entry;
     this.updateFavorite(this.entry);
+    this.canCreditEntry(this.entry.id);
   });
+
+  async canCreditEntry(id: string) {
+    const available = await userFavoritesBackend.canCreditEntry(id);
+    this.availableToCredit = !!available;
+  }
 
   addToFavorites(entry: Entry) {
     this.ids = this.ids.add(entry.id);
