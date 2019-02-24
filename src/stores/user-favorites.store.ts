@@ -3,6 +3,7 @@ import { paymentsBackend } from '../backends/payments.backend';
 import { userFavoritesBackend } from '../backends/user-favorites.backend';
 import { Set, List } from 'immutable';
 import { Entry, User } from '../models';
+import { PaymentsStore } from './payments.store';
 
 export class UserFavoritesStore {
   @observable ids: Set<string> = Set([]);
@@ -16,7 +17,10 @@ export class UserFavoritesStore {
   @observable
   availableToCredit: boolean;
 
-  constructor(public observables: IObservableObject) {}
+  constructor(
+    public observables: IObservableObject,
+    public paymentsStore: PaymentsStore
+  ) {}
 
   get isFavorited() {
     if (!this.entry) {
@@ -59,6 +63,7 @@ export class UserFavoritesStore {
     this.timeout = null;
     this.counter = 0;
     const credited = await userFavoritesBackend.creditEntry(entry.id, amount);
+    this.paymentsStore.refreshSubscription();
     if (!credited) {
       this.creditsSent = this.creditsSent - this.counter;
       return;

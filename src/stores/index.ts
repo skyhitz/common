@@ -40,5 +40,6 @@ export const paymentsStore = new PaymentsStore();
 export const entryStore = new EntryStore(sessionStore);
 export const userEntriesStore = new UserEntriesStore(sessionStore);
 export const userFavoritesStore = new UserFavoritesStore(
-  playerStore.observables
+  playerStore.observables,
+  paymentsStore
 );
