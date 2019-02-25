@@ -10,11 +10,15 @@ export class PaymentsStore {
   subscriptionLoaded: boolean = false;
   @observable
   credits: number = 0;
+  @observable
+  submittingSubscription: boolean = false;
 
   constructor() {}
 
   async subscribeUser(cardToken: string) {
+    this.submittingSubscription = true;
     await paymentsBackend.subscribe(cardToken);
+    this.submittingSubscription = false;
     this.subscribed = true;
     return true;
   }
