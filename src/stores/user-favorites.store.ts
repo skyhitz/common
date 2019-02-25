@@ -44,6 +44,9 @@ export class UserFavoritesStore {
   }
 
   addToFavorites(entry: Entry) {
+    if (this.ids.has(entry.id)) {
+      return;
+    }
     this.ids = this.ids.add(entry.id);
     this.userFavorites = this.userFavorites.push(entry);
   }
@@ -51,10 +54,9 @@ export class UserFavoritesStore {
   async updateFavorite(entry: Entry) {
     let { credits } = await userFavoritesBackend.isFavorited(entry.id);
     if (credits) {
-      console.log(credits);
-      this.creditsSent = credits;
       this.addToFavorites(entry);
     }
+    this.creditsSent = credits;
   }
 
   async sendCredits(entry: Entry) {
@@ -69,9 +71,6 @@ export class UserFavoritesStore {
       return;
     }
 
-    if (this.ids.has(entry.id)) {
-      return;
-    }
     this.addToFavorites(entry);
   }
 
