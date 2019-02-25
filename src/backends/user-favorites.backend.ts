@@ -9,6 +9,7 @@ export class UserFavoritesBackend {
          {
           hasCreditFromUser(id: "${id}"){
             credits
+            totalCredits
           }
         }
       `

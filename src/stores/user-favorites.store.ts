@@ -15,6 +15,8 @@ export class UserFavoritesStore {
   @observable
   creditsSent: number = 0;
   @observable
+  totalCredits: number = 0;
+  @observable
   availableToCredit: boolean;
 
   constructor(
@@ -52,11 +54,12 @@ export class UserFavoritesStore {
   }
 
   async updateFavorite(entry: Entry) {
-    let { credits } = await userFavoritesBackend.isFavorited(entry.id);
+    let { credits, totalCredits } = await userFavoritesBackend.isFavorited(entry.id);
     if (credits) {
       this.addToFavorites(entry);
     }
     this.creditsSent = credits;
+    this.totalCredits = totalCredits;
   }
 
   async sendCredits(entry: Entry) {
@@ -68,6 +71,7 @@ export class UserFavoritesStore {
     this.paymentsStore.refreshSubscription();
     if (!credited) {
       this.creditsSent = this.creditsSent - this.counter;
+      this.totalCredits = this.totalCredits - this.counter;
       return;
     }
 
@@ -76,6 +80,7 @@ export class UserFavoritesStore {
 
   async sendCredit(entry: Entry) {
     this.creditsSent = this.creditsSent + 1;
+    this.totalCredits = this.totalCredits + 1;
     this.counter = this.counter + 1;
     if (!this.timeout) {
       this.timeout = setTimeout(() => this.sendCredits(entry), 5000);
