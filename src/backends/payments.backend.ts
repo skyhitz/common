@@ -9,10 +9,22 @@ export class PaymentsBackend {
     mutation {
       subscribeUser(cardToken: "${cardToken}")
     }
-    `
+    `,
       })
       .then((data: any) => data.data)
       .then(({ subscribeUser }) => subscribeUser);
+  }
+  async withdrawToExternalWallet(address: string, amount: number) {
+    return client
+      .mutate({
+        mutation: gql`
+    mutation {
+      withdrawToExternalWallet(address: "${address}", amount: ${amount})
+    }
+    `,
+      })
+      .then((data: any) => data.data)
+      .then(({ withdrawToExternalWallet }) => withdrawToExternalWallet);
   }
   async refreshSubscription() {
     return client
@@ -25,7 +37,7 @@ export class PaymentsBackend {
             }
           }
         `,
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       .then((data: any) => data.data)
       .then(({ paymentsInfo }) => paymentsInfo);

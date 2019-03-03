@@ -29,4 +29,9 @@ export class PaymentsStore {
     this.credits = credits;
     this.subscriptionLoaded = true;
   }
+
+  async withdrawToExternalWallet(address: string, amount: number) {
+    await paymentsBackend.withdrawToExternalWallet(address, amount);
+    await this.refreshSubscription();
+  }
 }
