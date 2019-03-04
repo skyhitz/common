@@ -13,10 +13,6 @@ export class PaymentsStore {
   @observable
   submittingSubscription: boolean = false;
   @observable
-  withdrawAddress: string;
-  @observable
-  creditsToWithdraw: number;
-  @observable
   submittingWithdraw: boolean;
 
   constructor() {}
@@ -36,15 +32,16 @@ export class PaymentsStore {
     this.subscriptionLoaded = true;
   }
 
-  async withdrawToExternalWallet() {
+  async withdrawToExternalWallet(
+    withdrawAddress: string,
+    creditsToWithdraw: number
+  ) {
     this.submittingWithdraw = true;
     await paymentsBackend.withdrawToExternalWallet(
-      this.withdrawAddress,
-      this.creditsToWithdraw
+      withdrawAddress,
+      creditsToWithdraw
     );
     await this.refreshSubscription();
-    this.withdrawAddress = null;
-    this.creditsToWithdraw = null;
     this.submittingWithdraw = false;
   }
 }
