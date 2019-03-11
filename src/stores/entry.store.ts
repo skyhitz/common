@@ -9,6 +9,7 @@ import {
 import { SessionStore } from './session.store';
 import { entriesBackend } from '../backends/entries.backend';
 import UniqueIdGenerator from '../utils/unique-id-generator';
+import { Config } from '../config';
 
 export class EntryStore {
   @observable uploadingVideo: boolean = false;
@@ -47,6 +48,7 @@ export class EntryStore {
     let data = new FormData();
     data.append('file', `${preBase64StringVideo}${base64}`);
     data.append('folder', `/app/${this.sessionStore.user.id}/videos`);
+    data.append('notification_url', `${Config.API_ENDPOINT}/cloudinary/upload`);
     data.append('public_id', id);
     let res;
     try {
