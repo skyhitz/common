@@ -20,9 +20,9 @@ export class EntriesBackend {
         'description',
         'title',
         'id',
-        'videoUrl'
+        'videoUrl',
       ],
-      hitsPerPage: 50
+      hitsPerPage: 50,
     });
     return hits;
   }
@@ -41,7 +41,7 @@ export class EntriesBackend {
           videoUrl
         }
       }
-      `
+      `,
       })
       .then((data: any) => data.data)
       .then(({ entries }: any) => {
@@ -72,7 +72,7 @@ export class EntriesBackend {
         }
       }
       `,
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       .then((data: any) => data.data)
       .then(({ entries }: any) => {
@@ -94,7 +94,7 @@ export class EntriesBackend {
     mutation {
       addRecentEntrySearch(id: "${id}")
     }
-    `
+    `,
       })
       .then((data: any) => data.data)
       .then(({ addRecentEntrySearch }) => addRecentEntrySearch);
@@ -114,7 +114,7 @@ export class EntriesBackend {
           videoUrl
         }
       }
-      `
+      `,
       })
       .then((data: any) => data.data)
       .then(({ createEntry }) => {
@@ -144,7 +144,7 @@ export class EntriesBackend {
           id
         }
       }
-      `
+      `,
       })
       .then((data: any) => data.data)
       .then(({ createEntry }) => {
@@ -167,7 +167,7 @@ export class EntriesBackend {
               videoUrl
             }
           }
-        `
+        `,
       })
       .then((data: any) => data.data)
       .then(({ recentEntrySearches }: any) => {
@@ -197,7 +197,7 @@ export class EntriesBackend {
               videoUrl
             }
           }
-        `
+        `,
       })
       .then((data: any) => data.data)
       .then(({ topEntrySearches }: any) =>
@@ -216,7 +216,19 @@ export class EntriesBackend {
       mutation {
         removeEntry(id: "${id}", cloudinaryPublicId: "${cloudinaryPublicId}")
       }
-      `
+      `,
+      })
+      .then((data: any) => data.data);
+  }
+
+  youtubeUpload(videoUrl: string) {
+    return client
+      .mutate({
+        mutation: gql`
+      mutation {
+        youtubeUpload(videoUrl: "${videoUrl}")
+      }
+      `,
       })
       .then((data: any) => data.data);
   }

@@ -48,7 +48,6 @@ export class EntryStore {
     let data = new FormData();
     data.append('file', `${preBase64StringVideo}${base64}`);
     data.append('folder', `/app/${this.sessionStore.user.id}/videos`);
-    data.append('notification_url', `${Config.API_ENDPOINT}/cloudinary/upload`);
     data.append('public_id', id);
     let res;
     try {
@@ -57,6 +56,7 @@ export class EntryStore {
       this.updateUploadingVideo(false);
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
+      entriesBackend.youtubeUpload(secure_url);
     } catch (e) {
       console.log('error uploading video', e);
     }
