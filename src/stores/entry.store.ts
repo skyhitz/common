@@ -4,7 +4,7 @@ import {
   preBase64String,
   preBase64StringVideo,
   cloudinaryApiPath,
-  cloudinaryPreset
+  cloudinaryPreset,
 } from '../constants/constants';
 import { SessionStore } from './session.store';
 import { entriesBackend } from '../backends/entries.backend';
@@ -74,37 +74,37 @@ export class EntryStore {
   @action
   updateLoadingVideo = (state: boolean) => {
     this.loadingVideo = state;
-  }
+  };
 
   @action
   updateUploadingVideo = (state: boolean) => {
     this.uploadingVideo = state;
-  }
+  };
 
   @action
   updateArtworkUrl = (text: string) => {
     this.artworkUrl = text;
-  }
+  };
 
   @action
   updateVideoUrl = (text: string) => {
     this.videoUrl = text;
-  }
+  };
 
   @action
   updateEtag = (text: string) => {
     this.eTag = text;
-  }
+  };
 
   @action
   updateDescription = (text: string) => {
     this.description = text;
-  }
+  };
 
   @action
   updateTitle = (text: string) => {
     this.title = text;
-  }
+  };
 
   @computed
   get canCreate() {
