@@ -56,7 +56,6 @@ export class EntryStore {
       this.updateUploadingVideo(false);
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
-      entriesBackend.youtubeUpload(secure_url);
     } catch (e) {
       console.log('error uploading video', e);
     }
@@ -127,6 +126,7 @@ export class EntryStore {
       this.description,
       this.title
     );
+    entriesBackend.youtubeUpload(this.videoUrl, this.description, this.title);
   }
 
   async remove(entryId: string, cloudinaryPublicId: string) {

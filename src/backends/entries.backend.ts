@@ -221,12 +221,12 @@ export class EntriesBackend {
       .then((data: any) => data.data);
   }
 
-  youtubeUpload(videoUrl: string) {
+  youtubeUpload(videoUrl: string, description: string, title: string) {
     return client
       .mutate({
         mutation: gql`
       mutation {
-        youtubeUpload(videoUrl: "${videoUrl}")
+        youtubeUpload(videoUrl: "${videoUrl}", description: "${description}", title: "${title}")
       }
       `,
       })
