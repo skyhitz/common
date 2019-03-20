@@ -130,13 +130,14 @@ export class EntriesBackend {
     imageUrl: string,
     videoUrl: string,
     description: string,
-    title: string
+    title: string,
+    id: string
   ) {
     return client
       .mutate({
         mutation: gql`
       mutation {
-        createEntry(etag: "${etag}", imageUrl: "${imageUrl}", videoUrl: "${videoUrl}", description: "${description}", title: "${title}"){
+        createEntry(etag: "${etag}", imageUrl: "${imageUrl}", videoUrl: "${videoUrl}", description: "${description}", title: "${title}", id: "${id}"){
           videoUrl
           imageUrl
           description
@@ -221,12 +222,17 @@ export class EntriesBackend {
       .then((data: any) => data.data);
   }
 
-  youtubeUpload(videoUrl: string, description: string, title: string) {
+  youtubeUpload(
+    videoUrl: string,
+    description: string,
+    title: string,
+    id: string
+  ) {
     return client
       .mutate({
         mutation: gql`
       mutation {
-        youtubeUpload(videoUrl: "${videoUrl}", description: "${description}", title: "${title}")
+        youtubeUpload(videoUrl: "${videoUrl}", description: "${description}", title: "${title}", id: "${id}")
       }
       `,
       })

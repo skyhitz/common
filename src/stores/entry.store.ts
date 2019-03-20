@@ -20,6 +20,7 @@ export class EntryStore {
   @observable loadingArtwork: boolean;
   @observable description: string;
   @observable title: string;
+  @observable id: string;
 
   constructor(private sessionStore: SessionStore) {}
 
@@ -54,6 +55,7 @@ export class EntryStore {
       res = await fetch(cloudinaryApiVideoPath, { method: 'POST', body: data });
       let { secure_url, etag } = await res.json();
       this.updateUploadingVideo(false);
+      this.updateId(id);
       this.updateEtag(etag);
       this.updateVideoUrl(secure_url);
     } catch (e) {
@@ -107,6 +109,11 @@ export class EntryStore {
     this.title = text;
   };
 
+  @action
+  updateId = (text: string) => {
+    this.id = text;
+  };
+
   @computed
   get canCreate() {
     return (
@@ -114,7 +121,8 @@ export class EntryStore {
       this.artworkUrl &&
       this.videoUrl &&
       this.description &&
-      this.title
+      this.title &&
+      this.id
     );
   }
 
@@ -124,9 +132,15 @@ export class EntryStore {
       this.artworkUrl,
       this.videoUrl,
       this.description,
-      this.title
+      this.title,
+      this.id
     );
-    entriesBackend.youtubeUpload(this.videoUrl, this.description, this.title);
+    entriesBackend.youtubeUpload(
+      this.videoUrl,
+      this.description,
+      this.title,
+      this.id
+    );
   }
 
   async remove(entryId: string, cloudinaryPublicId: string) {
