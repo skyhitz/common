@@ -9,7 +9,6 @@ import {
 import { SessionStore } from './session.store';
 import { entriesBackend } from '../backends/entries.backend';
 import UniqueIdGenerator from '../utils/unique-id-generator';
-import { Config } from '../config';
 
 export class EntryStore {
   @observable uploadingVideo: boolean = false;
