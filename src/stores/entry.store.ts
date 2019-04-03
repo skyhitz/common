@@ -63,15 +63,20 @@ export class EntryStore {
   }
 
   async uploadArtwork(image: any) {
-    this.loadingArtwork = true;
+    this.updateLoadingArtwork(true);
     let data = new FormData();
     data.append('file', `${preBase64String}${image.base64}`);
     data.append('folder', `/app/${this.sessionStore.user.username}/images`);
     let res = await fetch(cloudinaryApiPath, { method: 'POST', body: data });
     let { secure_url } = await res.json();
     this.updateArtworkUrl(secure_url);
-    this.loadingArtwork = false;
+    this.updateLoadingArtwork(false);
   }
+
+  @action
+  updateLoadingArtwork = (state: boolean) => {
+    this.loadingArtwork = state;
+  };
 
   @action
   updateLoadingVideo = (state: boolean) => {
@@ -112,6 +117,18 @@ export class EntryStore {
   updateId = (text: string) => {
     this.id = text;
   };
+
+  clearStore() {
+    this.updateLoadingVideo(false);
+    this.updateUploadingVideo(false);
+    this.updateLoadingArtwork(false);
+    this.updateArtworkUrl('');
+    this.updateVideoUrl('');
+    this.updateEtag('');
+    this.updateDescription('');
+    this.updateTitle('');
+    this.updateId('');
+  }
 
   @computed
   get canCreate() {
