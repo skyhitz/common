@@ -66,7 +66,7 @@ export class EntryStore {
     this.updateLoadingArtwork(true);
     let data = new FormData();
     data.append('file', `${preBase64String}${image.base64}`);
-    data.append('folder', `/app/${this.sessionStore.user.username}/images`);
+    data.append('folder', `/app/${this.sessionStore.user.id}/images`);
     let res = await fetch(cloudinaryApiPath, { method: 'POST', body: data });
     let { secure_url } = await res.json();
     this.updateArtworkUrl(secure_url);
