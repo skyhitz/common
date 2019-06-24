@@ -43,3 +43,24 @@ export const userFavoritesStore = new UserFavoritesStore(
   playerStore.observables,
   paymentsStore
 );
+
+export type Stores = {
+  sessionStore: SessionStore;
+  signInValidationStore: SignInValidationStore;
+  signUpValidationStore: SignUpValidationStore;
+  resetPasswordValidationStore: ResetPasswordValidationStore;
+  updatePasswordValidationStore: UpdatePasswordValidationStore;
+  usernameAndEmailValidationStore: UsernameAndEmailValidationStore;
+  playerStore: PlayerStore;
+  inputSearchStore: InputSearchStore;
+  entriesSearchStore: EntriesSearchStore;
+  usersSearchStore: UsersSearchStore;
+  profileStore: ProfileStore;
+  editProfileStore: EditProfileStore;
+  likesStore: LikesStore;
+  playlistsStore: PlaylistsStore;
+  paymentsStore: PaymentsStore;
+  entryStore: EntryStore;
+  userEntriesStore: UserEntriesStore;
+  userFavoritesStore: UserFavoritesStore;
+};
