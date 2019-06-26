@@ -7,10 +7,10 @@ import { fragmentMatcher } from '../apollo/fragment-matcher';
 import { Config } from '../config';
 
 let networkInterface = createNetworkInterface({
-  uri: Config.GRAPHQL_URL
+  uri: Config.GRAPHQL_URL,
 });
 
-export let forceSignOut = observable(false);
+export let forceSignOut = observable.box(false);
 
 /**
  * Gets the JWT token from local storage and passes it
@@ -31,8 +31,8 @@ networkInterface.use([
       }
 
       next();
-    }
-  }
+    },
+  },
 ]);
 
 /**
@@ -76,11 +76,11 @@ networkInterface.useAfter([
             next();
           });
       }
-    }
-  }
+    },
+  },
 ]);
 
 export const client = new ApolloClient({
   fragmentMatcher,
-  networkInterface: networkInterface
+  networkInterface: networkInterface,
 });
