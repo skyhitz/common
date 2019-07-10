@@ -5,8 +5,6 @@ import { userBackend } from '../backends/user.backend';
 import { SessionStore } from './session.store';
 import { preBase64String, cloudinaryApiPath } from '../constants/constants';
 
-require('fetch-everywhere');
-
 export class EditProfileStore {
   @observable error: string;
   @observable avatarUrl: string;

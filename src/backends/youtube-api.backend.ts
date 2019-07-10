@@ -1,5 +1,4 @@
 const key = 'AIzaSyCDa0BdgiroUvn0kSYIDpmojTO2u-Xtt7M';
-require('fetch-everywhere');
 
 export class YoutubeApi {
   googleApiUrl = 'https://www.googleapis.com/youtube/v3';

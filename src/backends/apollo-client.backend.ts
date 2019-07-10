@@ -1,8 +1,6 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { observable } from 'mobx';
 import LocalStorage from '../async-storage';
-const globalAny: any = global;
-globalAny.fetch = require('fetch-everywhere');
 import { fragmentMatcher } from '../apollo/fragment-matcher';
 import { Config } from '../config';
 
