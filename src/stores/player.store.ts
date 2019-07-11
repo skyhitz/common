@@ -193,14 +193,6 @@ export class PlayerStore {
         return this.loadAndPlay(entry);
       }
 
-      // if the user is located in the last item of the cue list, play the
-      // next one from related video.
-      let entry = await this.getRelatedVideo();
-
-      if (entry) {
-        this.loadPlayAndPushToCueList(entry);
-      }
-      return;
     }
 
     this.currentIndex++;
@@ -327,11 +319,6 @@ export class PlayerStore {
         return this.loadAndPlay(entry);
       }
 
-      let entry = await this.getRelatedVideo();
-
-      if (entry) {
-        this.loadPlayAndUnshiftToCueList(entry);
-      }
       return;
     }
 
