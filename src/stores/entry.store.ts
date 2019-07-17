@@ -2,9 +2,7 @@ import { observable, action, computed } from 'mobx';
 import {
   cloudinaryApiVideoPath,
   preBase64String,
-  preBase64StringVideo,
   cloudinaryApiPath,
-  cloudinaryPreset,
 } from '../constants/constants';
 import { SessionStore } from './session.store';
 import { entriesBackend } from '../backends/entries.backend';
@@ -31,22 +29,15 @@ export class EntryStore {
     return 'upload';
   }
 
-  async loadFile(blob: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        let base64 = reader.result;
-        resolve(base64);
-      };
-    });
-  }
-
-  async uploadVideo(base64: any) {
+  async uploadVideo(video: any) {
     this.updateUploadingVideo(true);
     let id = UniqueIdGenerator.generate();
-    let data = new FormData();
-    data.append('file', `${preBase64StringVideo}${base64}`);
+    let data: any = new FormData();
+    data.append('file', {
+      uri: video.uri,
+      name: video.uri.split('/').pop(),
+      type: 'video/mp4',
+    });
     data.append('folder', `/app/${this.sessionStore.user.id}/videos`);
     data.append('public_id', id);
     let res;
