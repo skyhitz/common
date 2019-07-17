@@ -67,47 +67,47 @@ export class EntryStore {
   @action
   updateLoadingArtwork = (state: boolean) => {
     this.loadingArtwork = state;
-  };
+  }
 
   @action
   updateLoadingVideo = (state: boolean) => {
     this.loadingVideo = state;
-  };
+  }
 
   @action
   updateUploadingVideo = (state: boolean) => {
     this.uploadingVideo = state;
-  };
+  }
 
   @action
   updateArtworkUrl = (text: string) => {
     this.artworkUrl = text;
-  };
+  }
 
   @action
   updateVideoUrl = (text: string) => {
     this.videoUrl = text;
-  };
+  }
 
   @action
   updateEtag = (text: string) => {
     this.eTag = text;
-  };
+  }
 
   @action
   updateDescription = (text: string) => {
     this.description = text;
-  };
+  }
 
   @action
   updateTitle = (text: string) => {
     this.title = text;
-  };
+  }
 
   @action
   updateId = (text: string) => {
     this.id = text;
-  };
+  }
 
   clearStore() {
     this.updateLoadingVideo(false);

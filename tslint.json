@@ -14,6 +14,7 @@
     "no-unused-variable": true,
     "one-line": [true, "check-open-brace", "check-whitespace"],
     "quotemark": [true, "single"],
+    "ignore-bound-class-methods": true,
     "semicolon": [true, "always"],
     "triple-equals": [true, "allow-null-check"],
     "typedef-whitespace": [
