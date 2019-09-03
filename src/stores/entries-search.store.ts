@@ -8,18 +8,17 @@ export class EntriesSearchStore {
   @observable searching: boolean = false;
   @observable loadingRecentSearches: boolean = false;
   @observable loadingTopSearches: boolean = false;
+  @observable loadingRecentlyAdded: boolean = false;
   @observable query: string = '';
   @observable public entries: List<Entry> = List([]);
   @observable public recentSearches: List<Entry> = List([]);
+  @observable public recentlyAdded: List<Entry> = List([]);
   @observable public topSearches: List<Entry> = List([]);
-  @computed get active () {
+  @computed get active() {
     return !!this.query;
   }
 
-  constructor (
-    public queryObservable: any
-  ) {
-  }
+  constructor(public queryObservable: any) {}
 
   public disposer = observe(this.queryObservable, ({ object }) => {
     if (object.type === 'entries' && object.q !== this.query) {
@@ -30,12 +29,11 @@ export class EntriesSearchStore {
   });
 
   public searchEntries(q: string) {
-    return entriesBackend.search(q)
-      .then(results => {
-        let entries: Entry[] = results.map((result: any) => new Entry(result));
-        this.setEntries(List(entries));
-        this.searching = false;
-      });
+    return entriesBackend.search(q).then(results => {
+      let entries: Entry[] = results.map((result: any) => new Entry(result));
+      this.setEntries(List(entries));
+      this.searching = false;
+    });
   }
 
   public debouncedSearch = debounce(this.searchEntries, 400);
@@ -48,34 +46,40 @@ export class EntriesSearchStore {
     this.recentSearches = entries;
   }
 
+  public setRecentlyAdded(entries: List<Entry>) {
+    this.recentlyAdded = entries;
+  }
+
   public setTopSearches(entries: List<Entry>) {
     this.topSearches = entries;
   }
 
   public getRecentSearches() {
     this.loadingRecentSearches = true;
-    return entriesBackend.getRecentSearches()
-      .then(entries => {
-        this.setRecentSearches(List(entries));
-        this.loadingRecentSearches = false;
-      });
+    return entriesBackend.getRecentSearches().then(entries => {
+      this.setRecentSearches(List(entries));
+      this.loadingRecentSearches = false;
+    });
+  }
+
+  public getRecentlyAdded() {
+    this.loadingRecentlyAdded = true;
+    return entriesBackend.getRecentlyAdded().then(entries => {
+      this.setRecentlyAdded(List(entries));
+      this.loadingRecentlyAdded = false;
+    });
   }
 
   public getTopSearches() {
     this.loadingTopSearches = true;
-    return entriesBackend.getTopSearches()
-      .then(entries => {
-        this.setTopSearches(List(entries));
-        this.loadingTopSearches = false;
-      });
+    return entriesBackend.getTopSearches().then(entries => {
+      this.setTopSearches(List(entries));
+      this.loadingTopSearches = false;
+    });
   }
 
   public async addRecentEntrySearch(id: string) {
     await entriesBackend.addRecentEntrySearch(id);
     this.getRecentSearches();
   }
-
 }
-
-
-

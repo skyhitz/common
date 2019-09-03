@@ -183,6 +183,36 @@ export class EntriesBackend {
       });
   }
 
+  async getRecentlyAdded(): Promise<Entry[]> {
+    return client
+      .query({
+        query: gql`
+          {
+            recentlyAdded {
+              imageUrl
+              userDisplayName
+              userUsername
+              description
+              title
+              id
+              videoUrl
+            }
+          }
+        `,
+      })
+      .then((data: any) => data.data)
+      .then(({ recentlyAdded }: any) => {
+        if (!recentlyAdded) {
+          return [];
+        }
+        return recentlyAdded.map((entry: any) => new Entry(entry));
+      })
+      .catch(e => {
+        console.info(e);
+        return [];
+      });
+  }
+
   async getTopSearches(): Promise<Entry[]> {
     return client
       .query({
