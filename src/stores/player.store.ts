@@ -410,7 +410,8 @@ export class PlayerStore {
     if (
       this.playbackInstance !== null &&
       this.playbackInstancePosition != null &&
-      this.playbackInstanceDuration != null
+      this.playbackInstanceDuration != null &&
+      this.playbackInstanceDuration !== 0
     ) {
       return this.playbackInstancePosition / this.playbackInstanceDuration;
     }
