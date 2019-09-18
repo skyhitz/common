@@ -18,6 +18,8 @@ export class EntryStore {
   @observable description: string;
   @observable title: string;
   @observable id: string;
+  @observable availableForSale: boolean;
+  @observable price: number;
 
   constructor(private sessionStore: SessionStore) {}
 
@@ -109,6 +111,16 @@ export class EntryStore {
     this.id = text;
   }
 
+  @action
+  updateAvailableForSale = (state: boolean) => {
+    this.availableForSale = state;
+  }
+
+  @action
+  updatePrice = (price: number) => {
+    this.price = price;
+  }
+
   clearStore() {
     this.updateLoadingVideo(false);
     this.updateUploadingVideo(false);
@@ -119,6 +131,8 @@ export class EntryStore {
     this.updateDescription('');
     this.updateTitle('');
     this.updateId('');
+    this.updateAvailableForSale(false);
+    this.updatePrice(null);
   }
 
   @computed
@@ -148,6 +162,16 @@ export class EntryStore {
       this.title,
       this.id
     );
+  }
+
+  async updatePricing() {
+    if (!this.availableForSale) {
+      return;
+    }
+    if (!this.id || !this.price) {
+      return;
+    }
+    await entriesBackend.updatePricing(this.id, this.price);
   }
 
   async remove(entryId: string, cloudinaryPublicId: string) {

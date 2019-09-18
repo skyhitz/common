@@ -268,6 +268,18 @@ export class EntriesBackend {
       })
       .then((data: any) => data.data);
   }
+
+  updatePricing(id: string, price: number) {
+    return client
+      .mutate({
+        mutation: gql`
+      mutation {
+        updatePricing(id: "${id}", price: "${price}")
+      }
+      `,
+      })
+      .then((data: any) => data.data);
+  }
 }
 
 export const entriesBackend = new EntriesBackend();
