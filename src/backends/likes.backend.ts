@@ -14,6 +14,7 @@ export class LikesBackend {
               description
               title
               id
+              videoUrl
             }
           }
         `
