@@ -171,7 +171,7 @@ export class EntryStore {
     if (!this.price) {
       return;
     }
-    await entriesBackend.updatePricing(entry.id, this.price);
+    await entriesBackend.updatePricing(entry.id, this.price, this.availableForSale);
     this.clearStore();
   }
 
