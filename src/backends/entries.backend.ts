@@ -21,8 +21,6 @@ export class EntriesBackend {
         'title',
         'id',
         'videoUrl',
-        'price',
-        'forSale'
       ],
       hitsPerPage: 50,
     });
@@ -41,8 +39,6 @@ export class EntriesBackend {
           title
           id
           videoUrl
-          price
-          forSale
         }
       }
       `,
@@ -73,8 +69,6 @@ export class EntriesBackend {
           title
           id
           videoUrl
-          price
-          forSale
         }
       }
       `,
@@ -118,8 +112,6 @@ export class EntriesBackend {
           title
           id
           videoUrl
-          price
-          forSale
         }
       }
       `,
@@ -151,8 +143,6 @@ export class EntriesBackend {
           description
           title
           id
-          price
-          forSale
         }
       }
       `,
@@ -176,8 +166,6 @@ export class EntriesBackend {
               title
               id
               videoUrl
-              price
-              forSale
             }
           }
         `,
@@ -208,8 +196,6 @@ export class EntriesBackend {
               title
               id
               videoUrl
-              price
-              forSale
             }
           }
         `,
@@ -240,8 +226,6 @@ export class EntriesBackend {
               title
               id
               videoUrl
-              price
-              forSale
             }
           }
         `,
