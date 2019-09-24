@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
 import { paymentsBackend } from '../backends/payments.backend';
 import { Set } from 'immutable';
+import { entriesBackend } from '../backends/entries.backend';
 
 export class PaymentsStore {
   @observable ids: Set<string> = Set([]);
@@ -43,5 +44,9 @@ export class PaymentsStore {
     );
     await this.refreshSubscription();
     this.submittingWithdraw = false;
+  }
+
+  public async buyEntry(id: string) {
+    await entriesBackend.buyEntry(id);
   }
 }
