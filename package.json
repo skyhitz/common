@@ -14,7 +14,7 @@
     "graphql-tag": "^2.4.2",
     "immutable": "^3.8.1",
     "lodash.debounce": "^4.0.8",
-    "lodash.merge": "4.6.0",
+    "lodash.merge": "4.6.2",
     "mobx": "5.10.0",
     "typescript": "^2.2.2"
   },
